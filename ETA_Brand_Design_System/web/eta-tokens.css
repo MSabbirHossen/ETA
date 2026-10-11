@@ -1,0 +1,13 @@
+:root {
+  --eta-navy: #073C84;
+  --eta-deep-blue: #0752B5;
+  --eta-blue: #0B7CEB;
+  --eta-bright-blue: #129BFF;
+  --eta-cyan: #16C4FF;
+  --eta-ink: #071B3B;
+  --eta-white: #FFFFFF;
+
+  --eta-gradient-brand: linear-gradient(135deg, #073C84 0%, #0B7CEB 55%, #16C4FF 100%);
+  --eta-logo-header-height: 48px;
+  --eta-logo-mobile-height: 38px;
+}

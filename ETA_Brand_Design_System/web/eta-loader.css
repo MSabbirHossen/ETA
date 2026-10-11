@@ -1,0 +1,74 @@
+/* ETA Brand Animated Loader CSS
+   Professional Brand Identity Loading Animation
+   Sequence:
+   1. Chevrons expand
+   2. Arrow ascends
+   3. Skullcap U-band settles
+   4. Subtle pulse / finish
+*/
+
+@keyframes etaBracketLeft {
+  0% { opacity: 0; transform: translate(-30px, 0); }
+  30%, 100% { opacity: 1; transform: translate(0, 0); }
+}
+
+@keyframes etaBracketRight {
+  0% { opacity: 0; transform: translate(30px, 0); }
+  30%, 100% { opacity: 1; transform: translate(0, 0); }
+}
+
+@keyframes etaArrowRise {
+  0%, 25% { opacity: 0; transform: translate(-20px, 40px) scale(0.9); }
+  55%, 100% { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+
+@keyframes etaCapRim {
+  0%, 50% { opacity: 0; transform: scale(0.95); }
+  75%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes etaPulseGlow {
+  0%, 75% { opacity: 0.3; }
+  85% { opacity: 0.9; }
+  100% { opacity: 0.3; }
+}
+
+.eta-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eta-anim-left {
+  animation: etaBracketLeft 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.eta-anim-right {
+  animation: etaBracketRight 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.eta-anim-arrow {
+  animation: etaArrowRise 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transform-origin: 560px 520px;
+}
+
+.eta-anim-rim {
+  animation: etaCapRim 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transform-origin: 627px 630px;
+}
+
+.eta-anim-glow {
+  animation: etaPulseGlow 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eta-anim-left,
+  .eta-anim-right,
+  .eta-anim-arrow,
+  .eta-anim-rim,
+  .eta-anim-glow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

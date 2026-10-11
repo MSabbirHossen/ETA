@@ -1,0 +1,20 @@
+{
+  "brand": "Exploratory Training Academy",
+  "abbreviation": "ETA",
+  "tagline": "Learn \u2022 Explore \u2022 Grow",
+  "usage": {
+    "lightThemeLogo": "logos/eta-logo-light.png",
+    "darkThemeLogo": "logos/eta-logo-dark.png",
+    "lightThemeMark": "icons/eta-mark-light.png",
+    "darkThemeMark": "icons/eta-mark-dark.png"
+  },
+  "colors": {
+    "navy": "#073C84",
+    "deepBlue": "#0752B5",
+    "blue": "#0B7CEB",
+    "brightBlue": "#129BFF",
+    "cyan": "#16C4FF",
+    "ink": "#071B3B",
+    "white": "#FFFFFF"
+  }
+}
