@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Environment files & Secrets
+.env
+.env.*
+.env*.local
+!.env.example
+!.env.*.example
+
+# Service account keys and certs
+*.pem
+*.key
+*.cert
+*.p12
+*.p8
+*serviceAccount*.json
+*firebase-adminsdk*.json
+credentials.json
+client_secret*.json
+
+# Build outputs
+dist/
+.turbo/
+
+# Logs & Debug
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Testing & Coverage
+coverage/
+*.tsbuildinfo
