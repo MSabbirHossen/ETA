@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="ETA Monochrome Symbol">
+  <g transform="translate(-142, -10) scale(0.635)" fill="currentColor">
+    <!-- Skullcap Base U-Band -->
+    <path d="M 409,490 L 411,630 C 411,675 515,692 627,692 C 739,692 838,675 838,630 L 838,492 L 786,522 L 786,597 C 786,622 715,636 627,636 C 539,636 460,622 460,597 L 460,522 Z"/>
+
+    <!-- Tassel -->
+    <rect x="892.5" y="448" width="8" height="78"/>
+    <circle cx="896.5" cy="534" r="18"/>
+    <path d="M 885,550 L 864,680 C 880,688 913,688 929,680 L 908,550 Z"/>
+
+    <!-- Right Chevron -->
+    <polygon points="973,418 728,288 700,343 838,418 680,503 680,574"/>
+
+    <!-- Arrow Shaft Left Facet -->
+    <polygon points="545,490 567,505 725,230 721,221"/>
+    <!-- Arrow Shaft Right Facet -->
+    <polygon points="567,505 566,577 729,241 725,230"/>
+
+    <!-- Left Chevron Body -->
+    <polygon points="586,249 281,419 566,577 567,505 410,418 588,322"/>
+    <!-- Left Chevron Fold Facet (single-color separation notch) -->
+    <polygon points="513,476 565,573 567,507"/>
+
+    <!-- Arrowhead -->
+    <polygon points="783,147 663,212 721,221 729,239 754,273"/>
+    <circle cx="754.5" cy="212.5" r="9" fill="white"/>
+  </g>
+</svg>

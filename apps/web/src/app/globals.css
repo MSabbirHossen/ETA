@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+:root {
+  /* Font Family Fallback */
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  /* ETA Brand Primary Palette */
+  --eta-navy: #073C84;
+  --eta-deep-blue: #0752B5;
+  --eta-blue: #0B7CEB;
+  --eta-bright-blue: #129BFF;
+  --eta-cyan: #16C4FF;
+  --eta-ink: #071B3B;
+  --eta-white: #FFFFFF;
+
+  /* ETA Gradients */
+  --eta-gradient-brand: linear-gradient(135deg, #073C84 0%, #0B7CEB 55%, #16C4FF 100%);
+  --eta-gradient-subtle: linear-gradient(180deg, rgba(7, 27, 59, 0.04) 0%, rgba(11, 124, 235, 0.06) 100%);
+  --eta-gradient-glow: radial-gradient(circle at 50% 0%, rgba(22, 196, 255, 0.18) 0%, rgba(11, 124, 235, 0.08) 45%, transparent 70%);
+
+  /* UI Tokens */
+  --background: #060E1A;
+  --foreground: #F0F6FC;
+  --surface: #0B172B;
+  --surface-raised: #0F2242;
+  --surface-border: rgba(22, 196, 255, 0.15);
+  --surface-border-hover: rgba(22, 196, 255, 0.4);
+
+  --eta-logo-header-height: 48px;
+  --eta-logo-mobile-height: 38px;
+}
+
+html:not(.dark),
+html.light {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --surface: #FFFFFF;
+  --surface-raised: #F1F5F9;
+  --surface-border: rgba(11, 124, 235, 0.15);
+  --surface-border-hover: rgba(11, 124, 235, 0.35);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), 'Segoe UI', Roboto, 'Noto Sans Arabic', 'Noto Sans Bengali', 'SolaimanLipi', Tahoma, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  selection-background-color: var(--eta-blue);
+  selection-color: #ffffff;
+}
+
+[dir="rtl"] {
+  font-family: 'Segoe UI', 'Noto Sans Arabic', Tahoma, Arial, sans-serif;
+  text-align: right;
+}
+
+[lang="bn"] {
+  font-family: var(--font-inter), 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', 'Vrinda', sans-serif;
+}
+
+/* Ensure technical codes, identifiers, and currency codes remain LTR */
+.bidi-ltr {
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  text-align: left;
+}
+
+/* Bi-directional safe rendering for user-generated text */
+.bidi-auto {
+  direction: auto;
+  unicode-bidi: plaintext;
+}
+
+::selection {
+  background: rgba(11, 124, 235, 0.4);
+  color: #ffffff;
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 196, 255, 0.5);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Glassmorphic Cards */
+.glass-panel {
+  background: rgba(11, 23, 43, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+html:not(.dark) .glass-panel,
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--surface-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -8px rgba(18, 155, 255, 0.25);
+}
+
+html:not(.dark) .glass-panel-hover:hover,
+html.light .glass-panel-hover:hover {
+  border-color: rgba(11, 124, 235, 0.45);
+  box-shadow: 0 10px 30px -4px rgba(11, 124, 235, 0.15);
+}
+
+/* ETA Brand Glow Button */
+.btn-brand-primary {
+  background: var(--eta-gradient-brand);
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(11, 124, 235, 0.35);
+}
+
+.btn-brand-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(22, 196, 255, 0.55);
+}
+
+/* ETA Brand Official Animated Loader */
+.eta-loader {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.eta-loader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(11, 124, 235, 0.18);
+  border-top-color: #0B7CEB;
+  border-right-color: #16C4FF;
+  border-radius: 50%;
+  animation: eta-spin 0.9s linear infinite;
+}
+
+.eta-loader img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  animation: eta-pulse 1.4s ease-in-out infinite;
+}
+
+.eta-loader-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.eta-loader-sm::before {
+  border-width: 2px;
+}
+
+.eta-loader-sm img {
+  width: 24px;
+  height: 24px;
+}
+
+@keyframes eta-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes eta-pulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eta-loader::before,
+  .eta-loader img {
+    animation: none;
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "brand": "Exploratory Training Academy",
+  "abbreviation": "ETA",
+  "tagline": "Learn \u2022 Explore \u2022 Grow",
+  "version": "2.0.0",
+  "colors": {
+    "primary": {
+      "navy": "#073C84",
+      "deepBlue": "#0752B5",
+      "brandBlue": "#0B7CEB",
+      "brightBlue": "#129BFF",
+      "cyanGlow": "#16C4FF",
+      "inkDark": "#071324",
+      "white": "#FFFFFF"
+    },
+    "gradients": {
+      "light": {
+        "leftChevron": [
+          "#0080FF",
+          "#0066D6",
+          "#004EA8"
+        ],
+        "leftFacet": [
+          "#0048A8",
+          "#003580"
+        ],
+        "rightChevron": [
+          "#008CFF",
+          "#006CD6",
+          "#0052B0"
+        ],
+        "arrowShaft": [
+          "#0072EA",
+          "#0099FF",
+          "#14BEFF"
+        ],
+        "skullcap": [
+          "#003A7C",
+          "#002454"
+        ]
+      },
+      "dark": {
+        "leftChevron": [
+          "#00B4FF",
+          "#008CFF",
+          "#0066FF"
+        ],
+        "leftFacet": [
+          "#005AE6",
+          "#0038B3"
+        ],
+        "rightChevron": [
+          "#00B8FF",
+          "#0090FF",
+          "#006AFF"
+        ],
+        "arrowShaft": [
+          "#0080FF",
+          "#00C0FF",
+          "#38E2FF"
+        ],
+        "skullcap": [
+          "#0080FF",
+          "#0050D0"
+        ]
+      }
+    }
+  },
+  "typography": {
+    "wordmark": "Montserrat, Outfit, Inter, 'Segoe UI', sans-serif",
+    "weights": {
+      "exploratory": 900,
+      "trainingAcademy": 700,
+      "tagline": 500
+    },
+    "tracking": {
+      "exploratory": "-0.01em",
+      "trainingAcademy": "0.22em",
+      "tagline": "0.32em"
+    }
+  },
+  "dimensions": {
+    "clearSpaceRatio": "0.25",
+    "minimumSizes": {
+      "fullLogoHorizontal": "120px",
+      "fullLogoStacked": "80px",
+      "symbolMark": "24px",
+      "favicon": "16px"
+    }
+  }
+}
