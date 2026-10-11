@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@eta/types": ["packages/types/src/index.ts"],
+      "@eta/config": ["packages/config/src/index.ts"],
+      "@eta/utils": ["packages/utils/src/index.ts"],
+      "@eta/validation": ["packages/validation/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "dist", ".next", "coverage"]
+}

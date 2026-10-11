@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment files & Secrets
+.env
+.env.*
+.env*.local
+!.env.example
+!.env.*.example
+
+# Credentials & Service Accounts & Private Keys
+*.pem
+*.key
+*.cert
+*.p12
+*.p8
+credentials.json
+client_secret*.json
+serviceAccountKey*.json
+*service-account*.json
+*firebase-adminsdk*.json
+google-services.json
+GoogleService-Info.plist
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.turbo/
+
+# IDE & Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Debug & Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+.cache/
+playwright-report/
+test-results/
