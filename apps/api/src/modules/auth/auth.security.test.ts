@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import mongoose from 'mongoose';
 import { authenticate } from '../../middleware/auth.js';
 import { admin } from '../../config/firebase.js';
 import { User } from '../users/user.model.js';
@@ -38,7 +39,9 @@ describe('Auth Security Boundary & Production E2E Isolation — PRD §9.3, §104
     });
 
     it('rejects forged/unverified tokens that fail Firebase Admin SDK verification', async () => {
-      const mockVerifyIdToken = vi.fn().mockRejectedValue(new Error('Firebase token signature invalid'));
+      const mockVerifyIdToken = vi
+        .fn()
+        .mockRejectedValue(new Error('Firebase token signature invalid'));
       vi.mocked(admin.auth).mockReturnValue({ verifyIdToken: mockVerifyIdToken } as any);
 
       const req: any = {
@@ -57,7 +60,9 @@ describe('Auth Security Boundary & Production E2E Isolation — PRD §9.3, §104
 
       expect(errorThrown).not.toBeNull();
       expect(errorThrown.code).toBe('UNAUTHORIZED');
-      expect(errorThrown.message).toContain('Authentication failed: Firebase token signature invalid');
+      expect(errorThrown.message).toContain(
+        'Authentication failed: Firebase token signature invalid',
+      );
       expect(req.user).toBeUndefined();
     });
 
@@ -79,6 +84,7 @@ describe('Auth Security Boundary & Production E2E Isolation — PRD §9.3, §104
         roles: ['STUDENT'],
       };
 
+      vi.spyOn(mongoose.connection, 'readyState', 'get').mockReturnValue(1);
       vi.spyOn(User, 'findOne').mockResolvedValue(mockDbUser);
 
       const req: any = {
