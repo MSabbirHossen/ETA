@@ -181,7 +181,8 @@ export const en: TranslationDictionary = {
   },
   audit: {
     title: 'Institutional Audit Trail',
-    subtitle: 'Immutable record of academic, financial, administrative, and access events (PRD §56)',
+    subtitle:
+      'Immutable record of academic, financial, administrative, and access events (PRD §56)',
     recordsCount: 'Audit Logs',
     exportCsv: 'Export CSV',
     filters: 'Investigation Filters',
@@ -311,7 +312,8 @@ export const en: TranslationDictionary = {
     recipient: 'Certified Student',
     course: 'Completed Program',
     issueDate: 'Issuance Date',
-    verificationSuccess: 'This credential has been officially verified against the academy registry.',
+    verificationSuccess:
+      'This credential has been officially verified against the academy registry.',
     verificationFailed: 'No valid credential was found matching this identification code.',
   },
   admissions: {
@@ -339,7 +341,7 @@ export const en: TranslationDictionary = {
     newConversation: 'New Message',
     searchPlaceholder: 'Search conversations...',
     noMatchingThreads: 'No matching threads found.',
-    startConversationPrompt: ' ',
+    startConversationPrompt: 'Select a conversation or start a new thread.',
     reply: 'Reply',
     edit: 'Edit Message',
     delete: 'Delete Message',
@@ -354,14 +356,16 @@ export const en: TranslationDictionary = {
     empty: 'No notifications at this time',
     viewAll: 'View All Notifications',
     newAlerts: 'new updates',
-    subtitle: 'Track academic events, coursework updates, grade announcements, and institutional broadcasts.',
+    subtitle:
+      'Track academic events, coursework updates, grade announcements, and institutional broadcasts.',
     refresh: 'Refresh',
     all: 'All',
     read: 'Read',
   },
   courses: {
     title: 'Specialized Engineering & Computing Programs',
-    subtitle: 'Explore our accredited courses engineered in collaboration with industry pioneers, featuring verifiable credentials and direct faculty mentorship.',
+    subtitle:
+      'Explore our accredited courses engineered in collaboration with industry pioneers, featuring verifiable credentials and direct faculty mentorship.',
     searchPlaceholder: 'Search by title, code, or keyword...',
     allLevels: 'All Levels',
     beginner: 'Beginner',
@@ -382,7 +386,7 @@ export const en: TranslationDictionary = {
     manageBroadcasts: 'Manage Broadcasts',
     searchPlaceholder: 'Search announcements...',
     noAnnouncements: 'No announcements posted',
-    noAnnouncementsDesc: ' ',
+    noAnnouncementsDesc: 'Check back later for official announcements and campus updates.',
   },
   cms: {
     title: 'Public Portal & CMS Configuration',
@@ -398,7 +402,8 @@ export const en: TranslationDictionary = {
   },
   offline: {
     title: 'You are currently offline',
-    description: 'Internet connectivity is unavailable. Previously downloaded learning materials and cached views remain accessible.',
+    description:
+      'Internet connectivity is unavailable. Previously downloaded learning materials and cached views remain accessible.',
     retry: 'Check Connection',
     cachedContent: 'Available Offline Materials',
     requiresConnection: 'This feature requires an active network connection.',

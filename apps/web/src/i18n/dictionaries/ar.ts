@@ -339,7 +339,7 @@ export const ar: TranslationDictionary = {
     newConversation: 'رسالة جديدة',
     searchPlaceholder: 'البحث في المحادثات...',
     noMatchingThreads: 'لم يتم العثور على محادثات مطابقة.',
-    startConversationPrompt: ' ',
+    startConversationPrompt: 'اختر محادثة أو ابدأ محادثة جديدة.',
     reply: 'رد',
     edit: 'تعديل الرسالة',
     delete: 'حذف الرسالة',
@@ -361,7 +361,8 @@ export const ar: TranslationDictionary = {
   },
   courses: {
     title: 'برامج الهندسة والحوسبة المتخصصة',
-    subtitle: 'استكشف دوراتنا المعتمدة والمصممة بالتعاون مع رواد الصناعة، مع شهادات قابلة للتحقق وإرشاد أكاديمي مباشر.',
+    subtitle:
+      'استكشف دوراتنا المعتمدة والمصممة بالتعاون مع رواد الصناعة، مع شهادات قابلة للتحقق وإرشاد أكاديمي مباشر.',
     searchPlaceholder: 'البحث بالعنوان، الرمز، أو الكلمات المفتاحية...',
     allLevels: 'كافة المستويات',
     beginner: 'مبتدئ',
@@ -382,7 +383,7 @@ export const ar: TranslationDictionary = {
     manageBroadcasts: 'إدارة البث',
     searchPlaceholder: 'البحث في الإعلانات...',
     noAnnouncements: 'لا توجد إعلانات منشورة',
-    noAnnouncementsDesc: ' ',
+    noAnnouncementsDesc: 'تحقق لاحقاً للاطلاع على الإعلانات الرسمية وتحديثات الحرم الأكاديمي.',
   },
   cms: {
     title: 'إعدادات البوابة العامة ونظام إدارة المحتوى',
@@ -398,7 +399,8 @@ export const ar: TranslationDictionary = {
   },
   offline: {
     title: 'أنت غير متصل بالإنترنت حالياً',
-    description: 'الاتصال بالإنترنت غير متوفر. المواد التعليمية والصفحات المحفوظة مسبقاً لا تزال متاحة للاطلاع.',
+    description:
+      'الاتصال بالإنترنت غير متوفر. المواد التعليمية والصفحات المحفوظة مسبقاً لا تزال متاحة للاطلاع.',
     retry: 'إعادة فحص الاتصال',
     cachedContent: 'المواد التعليمية المحفوظة بدون اتصال',
     requiresConnection: 'تتطلب هذه الميزة اتصالاً نشطاً بالإنترنت.',
@@ -444,7 +446,8 @@ export const ar: TranslationDictionary = {
     questionDraftNotice: 'جميع الأسئلة المولدة هي مسودات ويجب مراجعتها قبل الاعتماد والحفظ.',
     rubricFeedback: 'مساعد تقييم معايير الواجبات',
     rubricFeedbackSubtitle: 'مسودة ملاحظات تقييمية مستندة إلى معايير الواجب الدراسي.',
-    rubricFeedbackAdvisory: 'مسودة استشارية: يحتفظ المعلم بالسلطة الكاملة في اعتماد الدرجة النهائية.',
+    rubricFeedbackAdvisory:
+      'مسودة استشارية: يحتفظ المعلم بالسلطة الكاملة في اعتماد الدرجة النهائية.',
     copyAnswer: 'نسخ الإجابة',
     copied: 'تم النسخ!',
   },
