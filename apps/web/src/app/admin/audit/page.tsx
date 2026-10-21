@@ -140,7 +140,7 @@ export default function AdminAuditLogPage() {
       });
 
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/audit-logs/export?${params.toString()}`;
-      const token = await auth.currentUser?.getIdToken();
+      const token = await auth?.currentUser?.getIdToken();
 
       const response = await fetch(endpoint, {
         headers: {

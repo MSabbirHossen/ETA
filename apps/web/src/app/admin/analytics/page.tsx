@@ -90,7 +90,7 @@ export default function AdminAnalyticsPage() {
       const endpoint = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/reports/export?${queryParams.toString()}`;
 
       // Fetch with auth credentials
-      const token = await auth.currentUser?.getIdToken();
+      const token = await auth?.currentUser?.getIdToken();
       const res = await fetch(endpoint, {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
