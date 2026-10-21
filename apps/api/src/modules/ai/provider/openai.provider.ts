@@ -50,18 +50,19 @@ export class OpenAIProvider implements AIProvider {
     return vector;
   }
 
-  private async fetchOpenAI(url: string, init: RequestInit): Promise<Response> {
+  private async fetchOpenAI(url: string, init: globalThis.RequestInit): Promise<globalThis.Response> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
 
     try {
+      const headersRecord = (init.headers as Record<string, string>) || {};
       const res = await fetch(url, {
         ...init,
         signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this.apiKey}`,
-          ...(init.headers || {}),
+          ...headersRecord,
         },
       });
 
