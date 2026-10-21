@@ -1,0 +1,23 @@
+# Dependency directories
+node_modules
+
+# Build artifacts and caches
+.next
+.turbo
+dist
+out
+build
+
+# Test reports and coverage
+playwright-report
+test-results
+coverage
+
+# Environment files
+.env*.local
+.env.local
+
+# Operating system / IDE files
+.DS_Store
+Thumbs.db
+*.log
