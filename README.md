@@ -1,1403 +1,499 @@
 # Exploratory Training Academy (ETA) Platform
 
 > **Unified Academic, Training & Examination Management Platform**  
-> *Tagline: Learn • Explore • Grow*
+> _Empowering students, instructors, guardians, and academy administrators through an enterprise-grade, offline-capable academic operating system._  
+> **Tagline:** _Learn • Explore • Grow_
 
 [![Turborepo](https://img.shields.io/badge/monorepo-Turborepo-0284c7.svg)](https://turbo.build/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6+-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15+-black.svg)](https://nextjs.org/)
-[![Express](https://img.shields.io/badge/Express-4.21-lightgrey.svg)](https://expressjs.com/)
+[![Express](https://img.shields.io/badge/Express-4.21+-lightgrey.svg)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose%208-green.svg)](https://mongoosejs.com/)
-[![License](https://img.shields.io/badge/license-Proprietary-red.svg)]()
+[![PWA](https://img.shields.io/badge/PWA-Offline--First-orange.svg)](<>)
+[![Production](https://img.shields.io/badge/Production-Live-emerald.svg)](https://eta-web-omega.vercel.app)
 
 ---
 
-## 1. Overview
+## 🌐 Live Production Deployment
 
-The **Exploratory Training Academy (ETA)** platform is an enterprise-grade, multi-tenant academic and training platform built to unify curriculum delivery, interactive examinations, enrollment pipelines, and role-based academy management into a scalable monorepo architecture.
+- **Production Web Application**: [https://eta-web-omega.vercel.app](https://eta-web-omega.vercel.app)
+- **Primary Governance Specification**: [`docs/ETA_PRD_v1.0.md`](./docs/ETA_PRD_v1.0.md)
+- **Automated CI/CD Workflow**: [`.github/workflows/deploy-vercel.yml`](./.github/workflows/deploy-vercel.yml)
 
-This repository is governed by the Product Requirements Document: [`docs/ETA_PRD_v1.0.md`](./docs/ETA_PRD_v1.0.md).
+---
+
+## 📋 Table of Contents
+
+1. [Overview & Core Value Proposition](#1-overview--core-value-proposition)
+2. [Monorepo Architecture](#2-monorepo-architecture)
+3. [Technology Stack Matrix](#3-technology-stack-matrix)
+4. [Role-Based Access Control (RBAC)](#4-role-based-access-control-rbac)
+5. [Getting Started & Local Development](#5-getting-started--local-development)
+6. [Production Deployment & Vercel Configuration](#6-production-deployment--vercel-configuration)
+7. [System Architecture & Core Domain Engines](#7-system-architecture--core-domain-engines)
+   - 7.1 [Academic Hierarchy Engine](#71-academic-hierarchy-engine)
+   - 7.2 [Classroom & Learning Content Engine](#72-classroom--learning-content-engine)
+   - 7.3 [Assignment & Rubric Evaluation Engine](#73-assignment--rubric-evaluation-engine)
+   - 7.4 [Examination, Quiz & Question Bank Engine](#74-examination-quiz--question-bank-engine)
+   - 7.5 [Attendance & Session Tracking Engine](#75-attendance--session-tracking-engine)
+   - 7.6 [Grading, GPA & Gradebook Publishing Engine](#76-grading-gpa--gradebook-publishing-engine)
+   - 7.7 [Admissions Lifecycle & Application Pipeline](#77-admissions-lifecycle--application-pipeline)
+   - 7.8 [Guardian & Family Engagement Engine](#78-guardian--family-engagement-engine)
+   - 7.9 [Communication, Announcements & Event Notifications](#79-communication-announcements--event-notifications)
+   - 7.10 [Unified Academic Calendar Engine](#710-unified-academic-calendar-engine)
+   - 7.11 [Academic Messaging & Collaboration](#711-academic-messaging--collaboration)
+   - 7.12 [Digital Credentials & Public Certificate Verification](#712-digital-credentials--public-certificate-verification)
+   - 7.13 [Finance, Invoicing & Fee Management](#713-finance-invoicing--fee-management)
+   - 7.14 [Public CMS, Dynamic Landing Page & Course Catalog](#714-public-cms-dynamic-landing-page--course-catalog)
+   - 7.15 [Knowledge Hub, Blog & Educational Resources](#715-knowledge-hub-blog--educational-resources)
+   - 7.16 [Global Multi-Entity Search Engine](#716-global-multi-entity-search-engine)
+   - 7.17 [Analytics, Role Dashboards & Export Engine](#717-analytics-role-dashboards--export-engine)
+   - 7.18 [Immutable Audit Logging & Compliance](#718-immutable-audit-logging--compliance)
+   - 7.19 [Bilingual Localization (i18n) & RTL Engine](#719-bilingual-localization-i18n--rtl-engine)
+   - 7.20 [Offline-First PWA & Performance Optimization](#720-offline-first-pwa--performance-optimization)
+   - 7.21 [Educational AI Engine ("Ask ETA")](#721-educational-ai-engine-ask-eta)
+8. [Security & Architectural Guardrails](#8-security--architectural-guardrails)
+9. [Official Brand Tokens & Design System](#9-official-brand-tokens--design-system)
+10. [Quality Assurance & Verification Summary](#10-quality-assurance--verification-summary)
+11. [License & Governance](#11-license--governance)
+
+---
+
+## 1. Overview & Core Value Proposition
+
+The **Exploratory Training Academy (ETA)** platform is an enterprise-grade, multi-tenant academic and training management suite. Built to replace fragmented educational tools, ETA consolidates curriculum planning, interactive examinations, automated student onboarding, guardian oversight, and institutional governance into a single performant monorepo.
+
+### Key Pillars
+
+- **Strict Role-Based Governance**: Centralized RBAC covering Super Admins, Academy Administrators, Teachers, Students, Guardians, Staff, and Visitors.
+- **Server-Authoritative Assessment Integrity**: Anti-cheat examination delivery with server-side timers, randomized questions, and automatic answer-key stripping.
+- **Bilingual & Culturally Adaptive**: Seamless Arabic (RTL) and English (LTR) rendering with localized date formats, typography, and directionality.
+- **Offline-First PWA Readiness**: Service worker asset caching, indexed offline storage, and automatic background synchronization.
+- **Educational AI Companion ("Ask ETA")**: Grounded Retrieval-Augmented Generation (RAG) assistant with academic integrity guardrails, strict lesson context bounds, and an automated killswitch.
 
 ---
 
 ## 2. Monorepo Architecture
 
-The workspace is organized using **pnpm workspaces** and **Turborepo** to guarantee modular boundaries, zero duplicate type definitions, and rapid cached builds:
+ETA utilizes **pnpm workspaces** and **Turborepo** for optimized caching, dependency graphs, and parallel execution:
 
 ```
 eta-platform/
 ├── apps/
-│   ├── web/                     # Next.js 15+ App Router frontend with ETA Brand Design System
-│   └── api/                     # Node.js + Express 4 TypeScript backend API service
+│   ├── web/                     # Next.js 15+ App Router, React 19, Tailwind CSS v4, PWA
+│   └── api/                     # Node.js 22+ Express API service, Mongoose 8, Firebase Admin
 ├── packages/
-│   ├── types/                   # Shared TypeScript interfaces, role enums, API models
-│   ├── config/                  # Shared RBAC role-permission matrix, business constants
-│   ├── validation/              # Zod schemas for runtime request & payload validation
-│   └── utils/                   # Pure shared helpers (slugify, pagination, assertions)
-├── ETA_Brand_Design_System/     # Master Brand assets, tokens, and loader components
-├── docs/                        # Primary PRD and technical design specifications
-└── .github/                     # GitHub Actions CI/CD workflows
+│   ├── types/                   # Shared TypeScript models, DTOs, API envelopes, RBAC types
+│   ├── config/                  # RBAC matrix, permission definitions, brand tokens, grading scales
+│   ├── validation/              # Zod validation schemas for all requests, queries, and mutations
+│   └── utils/                   # Shared utility helpers (slugify, pagination, math, object IDs)
+├── ETA_Brand_Design_System/     # Brand SVGs, design guidelines, animated loader components
+├── docs/                        # Primary PRD specification (ETA_PRD_v1.0.md)
+└── .github/workflows/           # CI validation & automated Vercel production deployment
 ```
 
 ---
 
-## 3. Technology Stack
+## 3. Technology Stack Matrix
 
-### Frontend (`apps/web`)
-- **Framework**: Next.js 15+ (App Router), React 19
-- **Styling**: Tailwind CSS v4 + ETA Design System CSS Tokens (`globals.css`)
-- **Icons**: Lucide React
-- **Brand Integration**: Official ETA animated loader (`ETALoader`), dark/light logo variants, brand color system
-
-### Backend (`apps/api`)
-- **Runtime**: Node.js 20+ / 22+ with TypeScript (`NodeNext` resolution)
-- **Framework**: Express 4.21+
-- **Database & ODM**: MongoDB with Mongoose 8
-- **Authentication**: Firebase Admin SDK (verifying Firebase client ID tokens)
-- **Validation**: Zod schema middleware for request params, query, and body
-- **Security**: Helmet, CORS, parameterized queries, sanitized error envelopes
+| Domain                      | Technology                        | Purpose                                                                     |
+| :-------------------------- | :-------------------------------- | :-------------------------------------------------------------------------- |
+| **Frontend Framework**      | **Next.js 15+ (App Router)**      | Modern SSR, streaming layouts, metadata API, server actions                 |
+| **UI & Styling**            | **Tailwind CSS v4 + Vanilla CSS** | Tokenized design system with custom CSS properties in `globals.css`         |
+| **Icons & Brand**           | **Lucide React + Official SVGs**  | ETA Brand Design System, responsive iconography                             |
+| **Client Authentication**   | **Firebase Client SDK (v12)**     | Client-side OAuth, email/password identity, ID token issuance               |
+| **Backend Runtime**         | **Node.js 22+ / TypeScript 5.6+** | Robust ESM runtime with strict typing and modern Node APIs                  |
+| **Backend Framework**       | **Express 4.21+**                 | Modular REST API routing, centralized error handlers, security middleware   |
+| **Database & ODM**          | **MongoDB Atlas + Mongoose 8**    | Multi-collection document store with compound indexes and schema validation |
+| **Admin Auth Verification** | **Firebase Admin SDK (v13)**      | Zero-trust token verification and user sync in middleware                   |
+| **Validation Layer**        | **Zod 3.23+**                     | Compile-time & runtime schema validation across frontend and backend        |
+| **Security Suite**          | **Helmet, CORS, Rate Limit**      | Hardened HTTP response headers, origin whitelisting, brute-force defense    |
+| **Testing Framework**       | **Vitest 2.1+ / Playwright**      | Fast unit/integration testing suite (346 tests) and E2E browser testing     |
+| **Build & Tooling**         | **Turborepo 2.11+ / pnpm 9**      | Monorepo task orchestration, pipeline caching, and dependency management    |
 
 ---
 
 ## 4. Role-Based Access Control (RBAC)
 
-The platform enforces 7 distinct user roles with granular permission grants defined centrally in [`packages/config/src/rbac.ts`](./packages/config/src/rbac.ts):
+ETA implements a fail-closed, multi-tier RBAC architecture defined in [`packages/config/src/rbac.ts`](./packages/config/src/rbac.ts):
 
-| Role | Scope | Description |
-| :--- | :--- | :--- |
-| `SUPER_ADMIN` | Platform-wide | Full platform governance, tenant lifecycle, global config & audits |
-| `ACADEMY_ADMIN` | Academy Tenant | Manages local cohorts, instructors, admissions, and reports |
-| `INSTRUCTOR` | Academic / Course | Creates course lessons, conducts exams, grades submissions |
-| `STUDENT` | Learning Journey | Enrolls in courses, attends lectures, submits assignments & exams |
-| `PARENT` | Guardian / Billing | Supervises linked student attendance, grades, and tuition |
-| `GUEST` | Public / Explore | Explores public courses and program catalog |
-| `AUDITOR` | Compliance | Read-only inspection of academic adherence and grade integrity |
+| Role              | Scope                    | Key Capabilities                                                                |
+| :---------------- | :----------------------- | :------------------------------------------------------------------------------ |
+| **`SUPER_ADMIN`** | Platform-wide            | Full governance, tenant provisioning, system configs, audit trail inspection    |
+| **`ADMIN`**       | Academy-wide             | Cohort management, instructor assignments, financial oversight, admissions      |
+| **`TEACHER`**     | Assigned Courses/Batches | Lesson authoring, assessment publishing, gradebook submission, roll call        |
+| **`STUDENT`**     | Enrolled Cohorts         | Course participation, interactive quizzes, assignment submissions, certificates |
+| **`GUARDIAN`**    | Linked Students          | Attendance tracking, academic progress review, fee invoices, teacher messaging  |
+| **`STAFF`**       | Operational Support      | Admission reviews, announcement broadcasts, calendar updates                    |
+| **`VISITOR`**     | Public Surface           | Public course catalog, admissions application, blog, certificate verification   |
 
 ---
 
-## 5. Getting Started
+## 5. Getting Started & Local Development
 
 ### Prerequisites
-- **Node.js**: `>= 20.0.0`
+
+- **Node.js**: `>= 20.0.0` (Recommended: `v22.x`)
 - **pnpm**: `>= 9.0.0`
-- **MongoDB**: Running instance (local or MongoDB Atlas)
+- **MongoDB**: Active MongoDB Atlas cluster or local replica set (`>= 7.0`)
+- **Firebase Project**: Firebase Auth project with Email/Password and Google providers enabled
 
 ### Installation
+
 ```bash
-# Clone the repository
+# 1. Clone repository
 git clone https://github.com/MSabbirHossen/ETA.git
 cd eta-platform
 
-# Install monorepo dependencies
+# 2. Install workspace dependencies
 pnpm install
 ```
 
 ### Environment Configuration
-Copy the template `.env.example` files:
 
 ```bash
-# Backend API configuration
+# Configure backend API environment
 cp apps/api/.env.example apps/api/.env
 
-# Frontend Web configuration
+# Configure frontend Web environment
 cp apps/web/.env.example apps/web/.env.local
 ```
 
-### Development
-Run all services concurrently using Turborepo:
+#### Backend Environment Variables (`apps/api/.env`)
+
+```env
+NODE_ENV=development
+PORT=5000
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/etaDB?retryWrites=true&w=majority
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your-firebase-project-id.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+FRONTEND_URL=https://eta-web-omega.vercel.app
+SUPER_ADMIN_BOOTSTRAP_EMAIL=databaseadmin1@gmail.com
+CRON_SECRET=development-cron-secret-32-characters-min
+```
+
+#### Frontend Environment Variables (`apps/web/.env.local`)
+
+```env
+NEXT_PUBLIC_APP_URL=https://eta-web-omega.vercel.app
+NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-project.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=709261369121
+NEXT_PUBLIC_FIREBASE_APP_ID=1:709261369121:web:...
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-...
+```
+
+### Running Locally
 
 ```bash
+# Run backend and frontend concurrently
 pnpm dev
 ```
-- **Web Application**: [http://localhost:3000](http://localhost:3000)
-- **API Gateway**: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
-- **Health Check**: [http://localhost:5000/api/v1/health](http://localhost:5000/api/v1/health)
 
-### Quality Assurance & Testing
+- **Web App**: [http://localhost:3000](http://localhost:3000)
+- **API Server**: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
+- **API Health**: [http://localhost:5000/api/v1/health](http://localhost:5000/api/v1/health)
+
+---
+
+## 6. Production Deployment & Vercel Configuration
+
+The web application is hosted on **Vercel** with continuous deployment wired to GitHub:
+
+### Vercel Project Settings
+
+1. **Monorepo Root Directory**: In **Project Settings** → **General**, ensure **Root Directory** is configured to:
+   ```
+   apps/web
+   ```
+   _(This ensures Vercel invokes Turborepo for `@eta/web` while resolving workspace dependencies)._
+2. **Environment Variables**: Add all `NEXT_PUBLIC_*` keys listed in `apps/web/.env.example` to the Vercel dashboard.
+3. **CI/CD Quality Gate**: [`.github/workflows/deploy-vercel.yml`](./.github/workflows/deploy-vercel.yml) automatically validates:
+   - Workspace Linting (`pnpm lint`)
+   - TypeScript Type Checking (`pnpm type-check`)
+   - Complete Vitest Test Suite (`pnpm test` — 346 tests)
+   - Application Production Build (`pnpm build`)
+
+---
+
+## 7. System Architecture & Core Domain Engines
+
+```mermaid
+graph TD
+    Client[Next.js 15 Client / PWA] -->|HTTPS / CORS| API[Express API Gateway :5000]
+    API --> Auth[Firebase Admin Token Guard]
+    API --> Zod[Zod Validation Layer]
+    Auth --> RBAC[Role-Permission Matrix]
+    RBAC --> Modules[Academic Modules & Services]
+    Modules --> DB[(MongoDB Atlas)]
+    Modules --> AI[Educational AI Engine / OpenAI]
+    Modules --> Audit[Immutable Audit Logger]
+```
+
+### 7.1 Academic Hierarchy Engine
+
+Governs the core scholastic hierarchy: **Programs → Courses → Batches (Cohorts) → Subjects → Modules → Enrollments**.
+
+- **Cohort Capacity Enforcement**: Hard student caps preventing over-enrollment.
+- **Relational Integrity**: Strict cascade protection preventing orphan curricular entities.
+- **Key Endpoints**:
+  - `GET /api/v1/programs` / `POST /api/v1/programs`
+  - `GET /api/v1/courses` / `POST /api/v1/courses`
+  - `GET /api/v1/batches` / `POST /api/v1/batches`
+  - `POST /api/v1/enrollments` / `GET /api/v1/enrollments/my-enrollments`
+
+### 7.2 Classroom & Learning Content Engine
+
+Manages interactive lectures, live class timetables, and modular lesson sequences.
+
+- **Sequential Unlocking**: Enforces prerequisite module completion before unlocking advanced lessons.
+- **Resource Security**: Protected attachments served through role-authenticated access gates.
+- **Key Endpoints**:
+  - `GET /api/v1/classes` / `POST /api/v1/classes`
+  - `GET /api/v1/lessons` / `POST /api/v1/lessons`
+  - `POST /api/v1/lessons/:id/complete`
+
+### 7.3 Assignment & Rubric Evaluation Engine
+
+Handles student coursework, deadlines, rubric criteria, and instructor feedback.
+
+- **Late Submission Handling**: Automatic penalty calculation or hard cutoff based on batch settings.
+- **AI Rubric Suggestions**: Optional AI evaluation assistant that generates advisory feedback without modifying final grades.
+- **Key Endpoints**:
+  - `GET /api/v1/assignments` / `POST /api/v1/assignments`
+  - `POST /api/v1/assignments/:id/submissions`
+  - `POST /api/v1/submissions/:id/grade`
+
+### 7.4 Examination, Quiz & Question Bank Engine
+
+Server-authoritative assessment engine engineered for absolute academic integrity:
+
+- **Server-Authoritative Timer**: Clock countdown calculated as `min(now + duration, closesAt)` — immune to client clock manipulation.
+- **Anti-Cheat Serialization**: Student payloads explicitly strip `correctAnswer`, `isCorrect`, and explanations on the server.
+- **Randomization Stability**: Questions and options are randomized once per attempt and persisted to prevent refresh exploitation.
+- **Key Endpoints**:
+  - `GET /api/v1/quizzes` / `POST /api/v1/quizzes`
+  - `POST /api/v1/quizzes/:id/attempts/start`
+  - `POST /api/v1/quiz-attempts/:id/submit`
+
+### 7.5 Attendance & Session Tracking Engine
+
+Tracks live student presence across physical and virtual lectures:
+
+- **Status Lifecycle**: `PRESENT`, `ABSENT`, `LATE`, `EXCUSED`.
+- **Automated Absence Thresholds**: Trigger alert events when attendance falls below institutional policy (e.g., 75%).
+- **Key Endpoints**:
+  - `POST /api/v1/attendance/mark`
+  - `GET /api/v1/attendance/student/:id`
+  - `GET /api/v1/attendance/batch/:id/summary`
+
+### 7.6 Grading, GPA & Gradebook Publishing Engine
+
+Enterprise grading matrix with publish/lock workflows:
+
+- **Weighted GPA & Formula Evaluation**: Computes percentage and letter grades from quizzes, assignments, and exams.
+- **Gradebook Locking**: Once published by an administrator, grades are cryptographically locked against unauthorized mutation.
+- **Key Endpoints**:
+  - `GET /api/v1/gradebook/:batchId`
+  - `POST /api/v1/gradebook/:batchId/calculate`
+  - `POST /api/v1/gradebook/:batchId/publish`
+
+### 7.7 Admissions Lifecycle & Application Pipeline
+
+Public student application onboarding workflow:
+
+- **Status Transitions**: `SUBMITTED` → `UNDER_REVIEW` → `INTERVIEW_SCHEDULED` → `ACCEPTED` / `REJECTED`.
+- **One-Click Cohort Provisioning**: Automatically registers accepted applicants into student accounts and cohort enrollments.
+- **Key Endpoints**:
+  - `POST /api/v1/admissions/apply` (Public)
+  - `GET /api/v1/admissions/applications` (Staff/Admin)
+  - `PATCH /api/v1/admissions/applications/:id/status`
+
+### 7.8 Guardian & Family Engagement Engine
+
+Empowers parents and sponsors with real-time insight into student academic performance:
+
+- **Multi-Student Linking**: Guardians can securely oversee multiple enrolled siblings from a single dashboard.
+- **Direct Faculty Communication**: Dedicated messaging channels between guardians and instructors.
+- **Key Endpoints**:
+  - `GET /api/v1/guardian/wards`
+  - `GET /api/v1/guardian/wards/:id/attendance`
+  - `GET /api/v1/guardian/wards/:id/grades`
+
+### 7.9 Communication, Announcements & Event Notifications
+
+Targeted broadcast system with granular recipient scopes:
+
+- **Audience Targeting**: `ALL_ACADEMY`, `ROLE_SPECIFIC`, `COURSE_SPECIFIC`, `BATCH_SPECIFIC`.
+- **In-App Notification Dispatcher**: Real-time push updates for grade publications, deadlines, and schedule adjustments.
+- **Key Endpoints**:
+  - `GET /api/v1/announcements` / `POST /api/v1/announcements`
+  - `GET /api/v1/notifications` / `PATCH /api/v1/notifications/:id/read`
+
+### 7.10 Unified Academic Calendar Engine
+
+Aggregates term schedules, exam dates, submission cutoffs, and holidays:
+
+- **Role-Filtered Events**: Tailors event feeds so students only see relevant cohort milestones.
+- **Key Endpoints**:
+  - `GET /api/v1/calendar/events`
+  - `POST /api/v1/calendar/events` (Admin/Teacher)
+
+### 7.11 Academic Messaging & Collaboration
+
+Internal secure communication channels between educational stakeholders:
+
+- **Threaded Conversations**: Direct and cohort-level messaging with file attachment guardrails.
+- **Key Endpoints**:
+  - `GET /api/v1/messages/threads`
+  - `POST /api/v1/messages/send`
+
+### 7.12 Digital Credentials & Public Certificate Verification
+
+Cryptographically verified credentials for course and program graduates:
+
+- **Public Verification Surface**: Accessible at `/certificate/verify/[code]` with zero authentication required.
+- **Tamper Resistance**: Unique credential hashes verified against immutable graduation records.
+- **Key Endpoints**:
+  - `GET /api/v1/certificates/verify/:code` (Public)
+  - `POST /api/v1/certificates/issue` (Admin)
+
+### 7.13 Finance, Invoicing & Fee Management
+
+Tuition billing, installment plans, and transaction receipts:
+
+- **Lifecycle Tracking**: `PENDING`, `PARTIALLY_PAID`, `PAID`, `OVERDUE`.
+- **Key Endpoints**:
+  - `GET /api/v1/finance/invoices`
+  - `POST /api/v1/finance/invoices/:id/record-payment`
+
+### 7.14 Public CMS, Dynamic Landing Page & Course Catalog
+
+Public catalog management allowing administrators to update academy marketing pages:
+
+- **Dynamic Site Settings**: Academy branding, vision/mission, contact information, and FAQs.
+- **Public Course Showcase**: Searchable list of offered programs, course prerequisites, and faculty bios.
+- **Key Endpoints**:
+  - `GET /api/v1/cms/public/home` (Public)
+  - `PUT /api/v1/cms/settings` (Admin)
+
+### 7.15 Knowledge Hub, Blog & Educational Resources
+
+Integrated technical publishing platform:
+
+- **Curated Articles & Resources**: Markdown-rendered tutorials, downloadable reference sheets, and updates.
+- **Key Endpoints**:
+  - `GET /api/v1/blog` / `GET /api/v1/blog/:slug`
+  - `GET /api/v1/resources` / `GET /api/v1/resources/:slug`
+
+### 7.16 Global Multi-Entity Search Engine
+
+Instant indexing across curricular courses, lessons, announcements, and resources:
+
+- **Role-Aware Filtering**: Results respect user permissions (e.g., students only discover accessible course materials).
+- **Key Endpoints**:
+  - `GET /api/v1/search?q=:query`
+
+### 7.17 Analytics, Role Dashboards & Export Engine
+
+Role-tailored metrics and institutional reporting:
+
+- **Dashboards**: Cohort GPA distribution, attendance rates, admission conversion funnels, and revenue metrics.
+- **Secure CSV/PDF Exports**: Parameterized report generation with streaming downloads.
+- **Key Endpoints**:
+  - `GET /api/v1/analytics/overview`
+  - `GET /api/v1/reports/export?format=csv`
+
+### 7.18 Immutable Audit Logging & Compliance
+
+Strict compliance ledger documenting sensitive institutional operations:
+
+- **Write-Only / Immutability**: Audit records cannot be modified or deleted via API (`GET` routes only).
+- **Recorded Events**: Grade modifications, role escalations, admission approvals, and security alerts.
+- **Key Endpoints**:
+  - `GET /api/v1/audit-logs` (Super Admin Only)
+  - `GET /api/v1/audit-logs/export`
+
+### 7.19 Bilingual Localization (i18n) & RTL Engine
+
+Built-in native support for English and Arabic:
+
+- **Bidirectional CSS (LTR / RTL)**: Directional layout adaptation via `dir="rtl"` and logical properties.
+- **Cookie Persistence**: Remembers user language preference via `NEXT_LOCALE` cookie across sessions.
+- **Key Translation Dictionaries**: Located in `apps/web/src/i18n/`.
+
+### 7.20 Offline-First PWA & Performance Optimization
+
+Progressive Web App providing offline resiliency:
+
+- **Service Worker Lifecycle**: Prefetches application shells, core CSS tokens, and public catalogs.
+- **Offline Fallback Route**: Graceful degraded mode at `/offline` when network connectivity drops.
+- **Manifest**: Complete Web App Manifest with branded Android/iOS home-screen icons.
+
+### 7.21 Educational AI Engine ("Ask ETA")
+
+Context-bounded Retrieval-Augmented Generation (RAG) assistant:
+
+- **Academic Guardrails**: Queries are strictly bounded to verified curriculum lessons; AI is locked during active exam attempts.
+- **Provider Architecture**: Native OpenAI integration with built-in mock and automated killswitch mechanisms.
+- **PII Redaction**: Student names, contact information, and grade histories are redacted prior to upstream AI transmission.
+- **Key Endpoints**:
+  - `POST /api/v1/ai/chat` (Ask ETA)
+  - `POST /api/v1/ai/generate-quiz` (Teacher Tool)
+  - `POST /api/v1/ai/rubric-assistant` (Teacher Advisory)
+
+---
+
+## 8. Security & Architectural Guardrails
+
+1. **Zero-Trust Token Verification**: Every authenticated request validates Firebase JWTs against the Firebase Admin SDK on the backend.
+2. **CORS Origin Normalization**: The API normalizes trailing slashes so requests from `https://eta-web-omega.vercel.app` and development ports match securely.
+3. **Fail-Closed Permissions**: Endpoints check granular permission tokens (e.g., `ACADEMIC_COURSE_CREATE`), not merely broad role strings.
+4. **Parameterized Database Queries**: All Mongoose queries use typed schemas and strict object validation to prevent NoSQL injection.
+5. **Sanitized Error Envelopes**: In production, stack traces and internal database errors are suppressed into sanitized `{ success: false, error: { message, code } }` structures.
+
+---
+
+## 9. Official Brand Tokens & Design System
+
+The platform strictly implements the official ETA Brand Design System tokens:
+
+| Token Name      | Hex Code  | Purpose                                         |
+| :-------------- | :-------- | :---------------------------------------------- |
+| **Navy**        | `#073C84` | Primary Anchor, Header Background, Key CTAs     |
+| **Deep Blue**   | `#0752B5` | Secondary Brand Element, Card Headers           |
+| **Blue**        | `#0B7CEB` | Interactive Elements, Hover States, Active Tabs |
+| **Bright Blue** | `#129BFF` | Focus Rings, Highlights, Progress Indicators    |
+| **Cyan**        | `#16C4FF` | Energetic Glow Accents, Badges, Metrics         |
+| **Ink**         | `#071B3B` | Dark Mode Surface Canvas, Deep Backgrounds      |
+| **White**       | `#FFFFFF` | Text Contrast, Light Surfaces                   |
+
+---
+
+## 10. Quality Assurance & Verification Summary
+
+The workspace maintains a strict quality bar verified on every commit:
+
 ```bash
-# Run unit tests across workspace
+# Execute complete unit & integration test suite
 pnpm test
-
-# Type-check TypeScript across all apps & packages
-pnpm type-check
-
-# Run linter
-pnpm lint
-
-# Format code with Prettier
-pnpm format
 ```
 
----
+### Current Test Suite Status
 
-## 5. Core Academic Models & Structure (Phase 2)
-
-The academic core domain models follow strict parent-child hierarchies and relational integrity rules defined in [`docs/ETA_PRD_v1.0.md`](./docs/ETA_PRD_v1.0.md):
-
-```mermaid
-graph TD
-    Program[Program: Master / Diploma Track] -->|1 : N| Course[Course: Academic Syllabus]
-    Course -->|1 : N| Batch[Batch: Cohort Schedule & Capacity]
-    Course -->|1 : N| Subject[Subject: Ordered Curricular Subject]
-    Subject -->|1 : N| Module[Module: Ordered Curricular Unit]
-    Teacher[(Teacher / Instructor)] -->|Assign| Course
-    Teacher -->|Assign| Batch
-    Student[(Student)] -->|Enroll| Enrollment[Enrollment Record]
-    Batch -->|1 : N| Enrollment
-    Course -->|1 : N| Enrollment
-```
-
-### Academic Entity Overview
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`Program`** | `slug` (unique), `status` | Top-level academic program track (e.g. Master of AI). Soft-deletable. |
-| **`Course`** | `code` (unique), `slug` (unique), `programId` | Academic course syllabus. Optional link to `Program`. References assigned teachers. |
-| **`Batch`** | `batchCode` (unique), `courseId`, `status` | Scheduled cohort with `startDate`, `endDate`, and strict `studentLimit` capacity check. |
-| **`Subject`** | `[courseId, code]` (compound unique), `sequenceOrder` | Curricular subject within a course with ordered sequence index. |
-| **`Module`** | `[subjectId, sequenceOrder]` (compound unique), `prerequisites` | Curricular unit within a subject with prerequisite unlock chaining. |
-| **`Enrollment`** | `[studentId, batchId]` (compound unique), `status` | Student cohort enrollment with capacity enforcement and payment status lifecycle. |
-
-### Academic API Endpoints
-
-- `GET /api/v1/programs` / `POST /api/v1/programs` — List and create academic programs
-- `GET /api/v1/courses` / `POST /api/v1/courses` — List and create courses
-- `POST /api/v1/courses/:id/teachers` — Assign faculty members to courses (role-validated)
-- `GET /api/v1/batches` / `POST /api/v1/batches` — List and create cohort batches with capacity checks
-- `POST /api/v1/batches/:id/teachers` — Assign faculty to batches
-- `GET /api/v1/subjects` / `POST /api/v1/subjects` — List and create ordered subjects for courses
-- `GET /api/v1/modules` / `POST /api/v1/modules` — List and create ordered units for subjects
-- `GET /api/v1/enrollments` / `POST /api/v1/enrollments` — Enroll students and list academy registrations
-- `GET /api/v1/enrollments/my-enrollments` — Student self-service cohort registration listing
+- **Total Test Files**: 32 passed (100%)
+- **Total Unit & Integration Tests**: 346 passed (100%)
+- **TypeScript Type Check**: 6/6 workspace packages passed cleanly (`pnpm type-check`)
+- **ESLint Code Quality**: 0 errors across monorepo (`pnpm lint`)
 
 ---
 
-## 6. Classes, Lessons & Learning Materials Engine (Phase 3)
-
-Phase 3 introduces the teaching-delivery engine of the ETA platform, integrating scheduled interactive classes, modular lessons, and multimedia learning materials with strict access control.
-
-```mermaid
-graph TD
-    Course[Course] -->|1 : N| Subject[Subject]
-    Subject -->|1 : N| Module[Module]
-    Module -->|1 : N| Lesson[Lesson: Slug / Sequence / Publish State]
-    Lesson -->|1 : N| Material[Learning Material: PDF / Video / Code / Doc]
-    Batch[Batch: Cohort] -->|1 : N| ClassSession[Class Session: Live / Physical Schedule]
-    Teacher[(Teacher)] -->|Manages Assigned| Lesson
-    Teacher -->|Schedules Assigned| ClassSession
-    Student[(Student)] -->|Enrolled Active Access| Lesson
-    Student -->|Enrolled Cohort Schedule| ClassSession
-```
-
-### Phase 3 Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`Lesson`** | `[moduleId, slug]` (unique), `[moduleId, sequenceOrder]`, `status` | Curricular lesson unit with sequence ordering, publication lifecycle (`draft`, `published`, `archived`), duration, and visibility. |
-| **`LearningMaterial`** | `lessonId`, `courseId`, `moduleId`, `status` | Learning resource attached to a lesson. Supports types (`pdf`, `doc`, `video`, `slide`, `code`, `link`, `image`, `archive`) with download permissions and visibility control. |
-| **`ClassSession`** | `batchId`, `courseId`, `scheduledStart`, `status` | Scheduled live or physical class session with start/end validation, platform integration (`Google Meet`, `Zoom`, `Teams`, `Physical Classroom`), and meeting URLs. |
-
-### Access Control & Security Guarantees
-- **Teacher Authorization**: Teachers can only create, update, or schedule lessons, materials, and classes for courses or batches to which they have an active assignment record.
-- **Student IDOR Protection**: Students can only query lessons, materials, and class sessions belonging to batches/courses where they possess an `active` enrollment record.
-- **Publication Lifecycle**: Unpublished (`draft`, `archived`) lessons and `private` materials are strictly filtered on the server and hidden from students.
-
-### Phase 3 API Endpoints
-
-- `GET /api/v1/lessons` / `POST /api/v1/lessons` — List and create modular lessons
-- `GET /api/v1/lessons/:id` / `PATCH /api/v1/lessons/:id` — Retrieve and update lesson content & publishing state
-- `GET /api/v1/materials` / `POST /api/v1/materials` — List and attach learning materials
-- `GET /api/v1/materials/:id` / `PATCH /api/v1/materials/:id` / `DELETE /api/v1/materials/:id` — Manage learning materials
-- `GET /api/v1/classes` / `POST /api/v1/classes` — List and schedule live/physical class sessions
-- `GET /api/v1/classes/:id` / `PATCH /api/v1/classes/:id` — Retrieve and update scheduled class sessions
-
----
-
-## 7. Assignment & Submission Engine (Phase 4A)
-
-Phase 4A introduces the coursework delivery and evaluation layer of the ETA platform, strictly adhering to PRD §31.
-
-```mermaid
-graph TD
-    Course[Course] -->|1 : N| Batch[Batch: Cohort]
-    Batch -->|1 : N| Assignment[Assignment: Instructions / Max Marks / Due Dates / Policies]
-    Assignment -->|1 : N| Submission[Assignment Submission: Attempt / Status / Score / Feedback]
-    Teacher[(Teacher)] -->|Manages & Reviews| Assignment
-    Teacher -->|Scores & Evaluates| Submission
-    Student[(Student)] -->|Enrolled Submission| Submission
-```
-
-### Phase 4A Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`Assignment`** | `[batchId, slug]` (unique), `[courseId, batchId, status]`, `[batchId, dueDate]` | Cohort coursework with instruction body, total marks, due date, close date, submission type (`text`, `file`, `url`, `mixed`), max attempt limits, and late penalty metadata. |
-| **`AssignmentSubmission`** | `[assignmentId, studentId, attemptNumber]` (compound unique), `[studentId, assignmentId]`, `status` | Student submission record with server-derived timestamp, late detection, status lifecycle (`submitted`, `late`, `under_review`, `graded`, `resubmission_requested`, `completed`), score, and qualitative teacher feedback. |
-
-### Access Control & Security Guarantees
-- **Assignment-Derived Teacher Authorization**: Teachers can only create, update, publish, or evaluate assignments for courses or batches to which they have an active assignment record.
-- **Student IDOR Protection**: Students can only view and submit coursework for cohorts where they possess an `active` enrollment.
-- **Server-Authoritative Deadlines**: Due dates and close dates are strictly evaluated against server time (`Date.now()`); client timestamps are ignored.
-- **Attempt Limit & Concurrency Protection**: Compound unique database indexes prevent duplicate or unauthorized attempts exceeding `maxAttempts`.
-
-### Phase 4A API Endpoints
-
-- `GET /api/v1/assignments` / `POST /api/v1/assignments` — List and create cohort assignments
-- `GET /api/v1/assignments/:id` / `PATCH /api/v1/assignments/:id` / `DELETE /api/v1/assignments/:id` — Manage assignments
-- `POST /api/v1/assignments/:id/publish` — Publish draft assignment to students
-- `POST /api/v1/assignments/:id/submissions` — Submit assignment coursework
-- `GET /api/v1/assignments/:id/my-submissions` — Retrieve student's own attempts
-- `GET /api/v1/assignments/:id/submissions` — Retrieve all cohort submissions (teachers/admins)
-- `GET /api/v1/submissions/:id` — Get specific submission details
-- `PATCH /api/v1/submissions/:id/review` — Review, score, and provide qualitative feedback
-
----
-
-## 8. Quiz, Question Bank & Examination Engine (Phase 4B)
-
-Phase 4B introduces the Question Bank, Assessment configuration, and Examination Engine of the ETA platform, adhering strictly to PRD §32, §33, §34, §35, and §36.
-
-```mermaid
-graph TD
-    Teacher[(Teacher)] -->|Curates & Authors| QB[Question Bank: MCQ / True-False / Short Answer]
-    QB -->|Selects & Assembles| Assessment[Assessment: Quiz / Exam / Pass Mark / Timer / Shuffle]
-    Batch[Batch: Cohort] -->|Cohort Restriction| Assessment
-    Student[(Student)] -->|Starts & Resumes| Attempt[Assessment Attempt: Server Timer / Order Snapshot]
-    Attempt -->|Debounced Real-time| Autosave[Autosave Answers: Question Validation]
-    Attempt -->|Server Expiry / Submit| Evaluator[Evaluation Engine: Objective Auto-Grading & Review]
-    Evaluator -->|Auto-Graded / Reviewed| Results[Assessment Results: Immediate / Released]
-```
-
-### Phase 4B Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`Question`** | `[courseId, type, status]`, `[subjectId, status]`, `tags` | Question Bank item with type (`MCQ`, `MULTIPLE_SELECT`, `TRUE_FALSE`, `SHORT_ANSWER`, `ESSAY`), marks, difficulty, options, answer keys, and teacher explanations. |
-| **`Assessment`** | `[courseId, batchId, status]`, `[batchId, dueAt]`, `[batchId, slug]` (unique) | Assessment configuration linking Question Bank items, total marks, pass percentage, duration in minutes, attempt limits, shuffling toggles, and result release policies (`IMMEDIATE`, `AFTER_CLOSE`, `MANUAL`). |
-| **`AssessmentAttempt`** | `[assessmentId, studentId, attemptNumber]` (compound unique), `[studentId, status]`, `[assessmentId, status]` | Student attempt record with server-authoritative `startedAt` and `expiresAt`, ordered question snapshot (stable randomization), saved answers, auto-graded marks, and manual review state. |
-
-### Access Control & Security Guarantees
-- **Strict Answer-Key Protection**: Student question serialization (`ISafeQuestion`) strictly strips `isCorrect`, `correctAnswer`, teacher explanations, and grading rubrics on the server.
-- **Server-Authoritative Timer**: Attempt expiry (`expiresAt`) is generated strictly on the server: `min(now + duration, closesAt)`. Page reloads, tab switches, and network reconnects query the existing server attempt and never reset the clock.
-- **Auto-Submission on Timeout**: Expired attempts are immediately auto-submitted on any subsequent answer save or status request, locking modifications and auto-scoring objective questions.
-- **Randomization Stability**: Question sequences and option permutations are randomized once per attempt and stored on the attempt document, ensuring order consistency throughout reloads.
-- **Teacher Assignment Authorization**: Instructors can only author questions, configure assessments, and review attempts within academic scopes they are actively assigned to teach.
-- **Student IDOR Protection**: Active cohort enrollment is verified before allowing assessment discovery or attempt creation; attempts are strictly bound to the authenticated student ID.
-
-### Phase 4B API Endpoints
-
-- `GET /api/v1/questions` / `POST /api/v1/questions` — List and create reusable Question Bank items
-- `GET /api/v1/questions/:id` / `PATCH /api/v1/questions/:id` — Inspect and edit Question Bank items
-- `GET /api/v1/assessments` / `POST /api/v1/assessments` — List and configure cohort assessments (quizzes & exams)
-- `GET /api/v1/assessments/:id` / `PATCH /api/v1/assessments/:id` — Retrieve and update assessment metadata
-- `POST /api/v1/assessments/:id/publish` — Publish assessment to enrolled students
-- `POST /api/v1/assessments/:id/attempts/start` — Start a new attempt or resume an active in-progress attempt
-- `POST /api/v1/assessments/attempts/:attemptId/answers` — Autosave answer responses
-- `POST /api/v1/assessments/attempts/:attemptId/submit` — Finalize and submit assessment attempt
-- `GET /api/v1/assessments/attempts/:attemptId/me` — Student view of own attempt and score
-- `GET /api/v1/assessments/:id/attempts` — Faculty inspection of all cohort attempts
-- `POST /api/v1/assessments/attempts/:attemptId/review` — Review, manually score, and provide qualitative feedback
-
----
-
-## 9. Attendance Engine (Phase 4C)
-
-Phase 4C introduces the production-ready Attendance Engine of the ETA platform, adhering strictly to PRD §39, §40, and §70.
-
-```mermaid
-graph TD
-    ClassSession[ClassSession: Batch / Schedule] -->|Derives Scope| Roster[Eligible Roster: Active Enrollments]
-    Teacher[(Assigned Teacher)] -->|Takes Attendance| Session[AttendanceSession: OPEN]
-    Session -->|Bulk / Single Mark| Records[AttendanceRecords: PRESENT / ABSENT / LATE / EXCUSED / LEAVE]
-    Records -->|Atomic Upsert| Unique[Unique Constraint: classSessionId + studentId]
-    Teacher -->|Finalize Session| Finalize[Finalization: Auto-mark Unmarked as ABSENT]
-    Finalize --> SessionClosed[AttendanceSession: FINALIZED]
-    SessionClosed -->|Post-finalization Edit| Audit[Correction Workflow: Mandatory Reason & Previous State Log]
-    Records -->|Aggregates| Summary[Student History & Attendance Rate: present + late / totalClasses * 100]
-```
-
-### Phase 4C Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`AttendanceSession`** | `classSessionId` (unique), `[batchId, status]`, `[courseId, status]` | Session tracker managing lifecycle (`NOT_STARTED` -> `OPEN` -> `FINALIZED`), `openedBy`, `openedAt`, `finalizedBy`, and `finalizedAt`. |
-| **`AttendanceRecord`** | `[classSessionId, studentId]` (compound unique), `[studentId, classSessionId]`, `[batchId, status]`, `[courseId, status]`, `[studentId, status]` | Individual attendance document for one student and class session. Stores `status` (`PRESENT`, `ABSENT`, `LATE`, `EXCUSED`, `LEAVE`), `markedBy`, `markedAt`, `note`, and an append-only `corrections` audit subdocument array. |
-
-### Access Control & Integrity Guarantees
-- **Enrollment-Derived Roster**: Roster students are derived strictly from active `Enrollment` documents for the class session's `batchId`. Arbitrary student IDs submitted in payloads are rejected with `400 Bad Request`.
-- **Compound Uniqueness**: PRD §70 `{ classSessionId: 1, studentId: 1 }` database constraint prevents duplicate records from network retries or concurrent clicks.
-- **Teacher Assignment Authorization**: Only teachers assigned to the `ClassSession`, its `Batch`, or its `Course` (or administrators) can take, update, finalize, or correct attendance. Unrelated teachers receive `403 Forbidden`.
-- **Student IDOR Protection**: Students can only view their own attendance records (`/attendance/me`). Target student queries verify actor identity or administrative/guardian linkage.
-- **Audit Logging on Correction**: Once an attendance session is finalized, direct mutation is prohibited. Modifications must go through the correction endpoint, creating an indelible audit log with previous status, new status, modifier ID, timestamp, and mandatory explanation.
-- **Deterministic Attendance Percentage**: Overall attendance rate is calculated server-side: `Math.round(((presentCount + lateCount) / totalClasses) * 100)`.
-
-### Phase 4C API Endpoints
-
-- `GET /api/v1/attendance/sessions` — List class sessions with attendance states (teachers & administrators)
-- `GET /api/v1/attendance/sessions/:classSessionId/roster` — Retrieve eligible student roster and current marking state
-- `POST /api/v1/attendance/sessions/:classSessionId/records` — Mark attendance for a single student
-- `PATCH /api/v1/attendance/sessions/:classSessionId/records` — Bulk mark attendance for cohort roster
-- `POST /api/v1/attendance/sessions/:classSessionId/finalize` — Finalize session, locking records and auto-marking unmarked as `ABSENT`
-- `POST /api/v1/attendance/records/:recordId/correct` — Audited correction for a finalized attendance record
-- `GET /api/v1/attendance/me` — Student view of own attendance rate, breakdown metrics, and history
-- `GET /api/v1/attendance/student/:studentId` — Institutional view of specific student attendance (teachers, admins, guardians)
-
----
-
-## 10. Grading, Gradebook & Result Engine (Phase 4D)
-
-Phase 4D introduces the centralized Academic Grading & Gradebook Engine, adhering strictly to PRD §37 and §38.
-
-```mermaid
-graph TD
-    subgraph Sources of Truth
-        Sub[AssignmentSubmission.score]
-        Att[AssessmentAttempt.obtainedMarks]
-        Rec[AttendanceSession / AttendanceRecord]
-    end
-
-    subgraph Evaluation
-        Config[GradebookConfig: Category Weights sum 100%]
-        Engine[GradeCalculationEngine: Deterministic Calculation]
-        Sub --> Engine
-        Att --> Engine
-        Rec --> Engine
-        Config --> Engine
-    end
-
-    subgraph Lifecycle
-        Draft[DRAFT / Live Calculation] --> TeacherRev[TEACHER_REVIEWED]
-        TeacherRev --> AdminAppr[ADMIN_APPROVED]
-        AdminAppr --> Published[PUBLISHED: Students & Guardians]
-        Published --> Corrected[CORRECTED: Audited Post-Publication Fix]
-    end
-
-    Engine --> Draft
-    Draft -->|Teacher / Admin Override| Overridden[Override: Preserves Calculated Score]
-```
-
-### Phase 4D Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`GradebookConfig`** | `[courseId, batchId]` (unique) | Cohort grading configuration storing categories (`id`, `name`, `sourceType`, `weight`, `dropLowestCount`, `missingWorkPolicy`, `attemptPolicy`), `passingPercentage` (default 60%), and `gradeScale`. Backend enforces sum(weights) = 100%. |
-| **`GradeResult`** | `[courseId, batchId, studentId]` (unique), `[studentId, publicationStatus]`, `[batchId, publicationStatus]` | Authoritative student course evaluation record with category contributions, `calculatedPercentage`, `finalPercentage`, `letterGrade`, `gpa`, `isPassed`, `publicationStatus`, `override` subdocument, and append-only `correctionHistory` audit trail. |
-| **`GuardianLink`** | `[guardianId, studentId]` (unique), `status` | Active verified relationship record linking a guardian account to a student account for secure academic results access. |
-
-### Architectural Rules & Guarantees
-- **Authoritative Score Ownership**: The Gradebook does not create duplicate independent score sources. Raw marks remain strictly owned by `AssignmentSubmission`, `AssessmentAttempt`, and `AttendanceRecord`.
-- **Pure Deterministic Calculation**: `GradeCalculationEngine` is a centralized, pure service. It normalizes scores, applies late penalties from coursework metadata, executes drop-lowest rules, calculates weighted category contributions, maps institutional grade scales (A+ through F) and GPA (4.0 - 0.0), and enforces course pass/fail marks.
-- **Missing Work & Attempt Policies**: Supports `ZERO` and `EXCLUDE` policies for missing assessments. Multiple attempts are derived using `HIGHEST`, `LATEST`, or `FIRST` rules.
-- **Multi-Stage Publication Lifecycle**: Follows PRD §38: `DRAFT` (provisional) -> `TEACHER_REVIEWED` -> `ADMIN_APPROVED` -> `PUBLISHED` -> `CORRECTED`. Students and guardians can only access `PUBLISHED` or `CORRECTED` grades.
-- **Override & Correction Audit Trails**: Pre-publication overrides preserve the original calculated contribution and record mandatory reason, modifier, and timestamp. Post-publication modifications append indelible entries to `correctionHistory`.
-- **Guardian Linkage Verification**: Narrowly corrected earlier-phase guardian relationship resolution. Guardians can only query academic records and attendance for students linked via an active `GuardianLink` document.
-
-### Phase 4D API Endpoints
-
-- `GET /api/v1/gradebooks/:courseId/:batchId` — Gradebook overview, category summaries, and student roster results
-- `GET /api/v1/gradebooks/:courseId/:batchId/config` — Retrieve cohort grading category weights and policies
-- `PUT /api/v1/gradebooks/:courseId/:batchId/config` — Save grading configuration (validates sum of weights = 100%)
-- `POST /api/v1/gradebooks/:courseId/:batchId/calculate` — Execute batch recalculation across all enrolled students
-- `POST /api/v1/gradebooks/:courseId/:batchId/submit-review` — Teacher submits gradebook for administrative review
-- `POST /api/v1/gradebooks/:courseId/:batchId/approve` — Academic Admin approves submitted cohort grades
-- `POST /api/v1/gradebooks/:courseId/:batchId/publish` — Publish approved results to students and guardians
-- `POST /api/v1/gradebooks/:courseId/:batchId/students/:studentId/override` — Apply audited teacher grade override
-- `POST /api/v1/gradebooks/:courseId/:batchId/students/:studentId/correct` — Apply audited post-publication correction
-- `GET /api/v1/gradebooks/:courseId/:batchId/students/:studentId` — Retrieve single student grade breakdown
-- `GET /api/v1/grades/me` — Student and Guardian view of published course grades and GPA
-
----
-
-## 11. Phase 5 Architecture: Admissions & Guardian Management Engine
-
-Phase 5 implements the comprehensive **Admissions & Guardian Management Engine** governing candidate application intake, document verification, administrative multi-tier review, idempotent student account conversion and enrollment, and verified guardian linkage per PRD §42 and §43.
-
-```mermaid
-graph TD
-    subgraph Admissions Workflow
-        App[Prospective Applicant / Student / Visitor]
-        Draft[DRAFT: Incomplete application saved]
-        Submit[SUBMITTED: Locked against applicant tampering]
-        Review[UNDER_REVIEW: Evaluated by Staff / Admin]
-        ActionReq[ACTION_REQUIRED: Resubmission requested]
-        
-        App --> Draft
-        Draft --> Submit
-        Submit --> Review
-        Review --> ActionReq
-        ActionReq -->|Applicant updates & resubmits| Review
-        
-        Review --> Rejected[REJECTED: Institutional reason recorded]
-        Review --> Waitlisted[WAITLISTED: Held for future capacity]
-        Review --> Approved[APPROVED: Eligible for matriculation]
-        
-        Draft --> Withdrawn[WITHDRAWN]
-        Submit --> Withdrawn
-    end
-
-    subgraph Conversion & Matriculation
-        Approved --> Convert[ConvertToStudent / Idempotent Matriculation]
-        Convert --> StudentAcc[User Account: STUDENT role added]
-        Convert --> Enroll[Enrollment: Active Cohort Enrollment Created]
-        Convert --> StatusEnrolled[Status: ENROLLED]
-    end
-
-    subgraph Guardian Linking
-        Convert -.->|Auto-link if guardian email exists| GLink[GuardianLink: PENDING / ACTIVE]
-        AdminG[Admin / Guardian Management] --> GLink
-        GLink -->|Verification by Admin| VerifiedLink[Verified ACTIVE GuardianLink]
-        VerifiedLink --> GAccess[Guardian Portal: Read-only Access to Student Attendance & Grades]
-    end
-```
-
-### Phase 5 Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`AdmissionApplication`** | `[applicantId, courseId, batchId]` (unique), `status`, `programId`, `submittedAt` | Intake record capturing applicant biodata, prior educational history, emergency guardian details, document attachments, internal review audits, and decision history. Strips internal reviewer notes when exposed to applicant. |
-| **`GuardianLink`** *(Extended)* | `[guardianId, studentId]` (unique), `status`, `verified` | Unifying guardian-student relationship entity extended with `verified`, `verifiedBy`, `verifiedAt`, `linkedBy`, `permissions`, `isPrimary`, and `emergencyContact`. Backwards-compatible with Phase 4C Attendance and Phase 4D Gradebook queries. |
-
-### Architectural Rules & Guarantees
-- **Draft & Resubmission Lifecycle**: Applicants can incrementally build drafts across 6 structured steps (Academic Target, Biodata, Education History, Guardian Info, Document Attachments, Review). Submitted applications are locked server-side against unauthorized modifications. When placed in `ACTION_REQUIRED`, applicants can address notes and resubmit back to `UNDER_REVIEW`.
-- **Identity & Role Segregation**: Prospective applicants do not receive elevated `STUDENT` privileges until administrative decision approval and explicit matriculation. Rejections or withdrawals leave user accounts unaffected.
-- **Idempotent Student Conversion**: The `convertToStudent` engine transitions approved candidates to `ENROLLED`. It safely merges the `STUDENT` role onto existing `User` records (preserving prior roles), guarantees single-enrollment uniqueness via existing `Enrollment` models (`EnrollmentSource.ADMISSION`), and links guardians automatically if accounts match. Retried calls return the existing student/enrollment immediately.
-- **Secure Document Processing**: Embedded documents validate category, MIME type, size, and URLs. Documents are accessible only to the applicant, reviewing staff, and administrators.
-- **Guardian Authorization & IDOR Protection**: Guardians must possess an `ACTIVE` and `verified: true` `GuardianLink` to query child records. Unverified or `REVOKED` links immediately terminate access across attendance, gradebooks, and student profiles.
-
-### Phase 5 API Endpoints
-
-#### Admissions (Applicant & Administrative)
-- `POST /api/v1/admissions` — Create or retrieve existing application draft
-- `PATCH /api/v1/admissions/:id` — Update draft or update application when `ACTION_REQUIRED`
-- `POST /api/v1/admissions/:id/submit` — Formally submit application for evaluation
-- `GET /api/v1/admissions/me` — List applications owned by the authenticated user
-- `GET /api/v1/admissions/:id` — Get application details (sanitizes reviewer notes for applicants)
-- `POST /api/v1/admissions/:id/withdraw` — Withdraw draft or submitted application
-- `GET /api/v1/admissions` — Administrative search & filter across all applications
-- `POST /api/v1/admissions/:id/review` — Admissions staff records internal evaluation notes
-- `POST /api/v1/admissions/:id/decision` — Administrator issues `APPROVED`, `REJECTED`, or `WAITLISTED`
-- `POST /api/v1/admissions/:id/convert-to-student` — Idempotently convert approved applicant to active student
-
-#### Guardian Management
-- `GET /api/v1/guardians/links` — Administrator lists guardian-student links
-- `POST /api/v1/guardians/links` — Administrator creates a guardian-student link
-- `GET /api/v1/guardians/links/:id` — Retrieve guardian link details
-- `PATCH /api/v1/guardians/links/:id` — Update relationship or permissions
-- `POST /api/v1/guardians/links/:id/verify` — Verify and activate a guardian link
-- `POST /api/v1/guardians/links/:id/revoke` — Revoke guardian access immediately
-- `GET /api/v1/guardians/my-students` — Guardian queries all active linked students
-
----
-
-## 12. Phase 6 — Announcements & Event-Driven Notifications Engine
-
-Governed by PRD §44 (*Institutional Announcements*) and §45 (*Event-Driven Notifications*).
-
-### Architectural Distinction
-The ETA platform strictly decouples institutional announcements from user-specific notification delivery records:
-- **Announcements**: Author-created broadcast notices targeted to specific audiences (`public`, `all`, `students`, `teachers`, `guardians`, `admins`, `course`, `batch`, `selected_users`) with scheduling, expiration, and optional publication notification fan-out.
-- **Notifications**: Personal, user-specific inbox records generated by domain lifecycle events across admissions, academics, attendance, examinations, grade reports, and announcements, tracking read state (`readAt`) and email delivery dispatch.
-
-```mermaid
-flowchart TD
-    subgraph Domain Events
-        DE1[Assignment Published]
-        DE2[Assessment Published]
-        DE3[Class Scheduled / Cancelled]
-        DE4[Attendance Finalized]
-        DE5[Grades Published]
-        DE6[Admission Decision]
-        DE7[Guardian Verified]
-        DE8[Announcement Published]
-    end
-
-    DE1 & DE2 & DE3 & DE4 & DE5 & DE6 & DE7 & DE8 --> Dispatcher[NotificationDispatcher]
-    Dispatcher --> RecipientResolver[Audience & Recipient Resolver]
-    RecipientResolver --> Dedupe[Deduplication & Idempotency Key Guard]
-    Dedupe --> BulkInsert[(Notification Collection)]
-    Dedupe --> EmailAdapter[EmailService / Adapter]
-
-    subgraph User Experience
-        BulkInsert --> InboxPage[/notifications Inbox]
-        BulkInsert --> HeaderBell[Header Live Unread Badge & Dropdown]
-    end
-```
-
-### Key Guarantees
-- **Server-Side Audience Resolution**: Normal students and guardians only retrieve published, non-expired announcements targeted to them or public notices. Unauthenticated users only access published notices marked `isPublic: true`.
-- **Event Idempotency**: System-generated notifications utilize a unique compound key (`${userId}:${type}:${sourceId}`) to prevent duplicate notification records on retries.
-- **Guardian Privacy Isolation**: Academic alerts (absenteeism, grade publication) only fan out to guardians with verified and `ACTIVE` `GuardianLink` relationships for that specific student.
-- **Resilient Side Effects**: Failure in email delivery or notification side-effects does not roll back or interrupt core academic or admissions transactions.
-
-### Phase 6 API Endpoints
-
-#### Announcements (`/api/v1/announcements`)
-- `GET /api/v1/announcements` — Query targeted or public announcements (supports priority and audience filters)
-- `GET /api/v1/announcements/:id` — Retrieve announcement by ID with audience security verification
-- `POST /api/v1/announcements` — Author announcement (Staff/Admin) with optional immediate publishing or scheduling
-- `PATCH /api/v1/announcements/:id` — Update draft or scheduled announcement
-- `POST /api/v1/announcements/:id/publish` — Formally publish announcement and trigger recipient fan-out
-- `POST /api/v1/announcements/:id/archive` — Transition announcement to `ARCHIVED`
-- `DELETE /api/v1/announcements/:id` — Remove announcement record
-
-#### Notifications (`/api/v1/notifications`)
-- `GET /api/v1/notifications` — Retrieve paginated user notifications with category and unread filtering
-- `GET /api/v1/notifications/unread-count` — Optimized unread counter for badge indicators
-- `PATCH /api/v1/notifications/:id/read` — Mark notification as read (server-generated timestamp, IDOR protected)
-- `POST /api/v1/notifications/mark-all-read` — Mark all user notifications as read
-- `DELETE /api/v1/notifications/:id` — Dismiss or delete notification from user inbox
-
----
-
-## 13. Unified Academic Calendar Engine (Phase 7)
-
-Phase 7 implements the Unified Academic Calendar Engine as specified in PRD §46. In strict accordance with the non-duplication principle, the calendar engine does **NOT** duplicate scheduling data from authoritative models (`ClassSession`, `Assignment`, `Assessment`, `Announcement`, `Batch`). Instead, it executes role-scoped, parallel database range queries, normalizes source records into a standardized `ICalendarEvent` DTO, and projects them across Month, Week, Day, and Agenda views.
-
-```mermaid
-flowchart TD
-    subgraph Authoritative Domain Collections
-        CS[ClassSession: scheduledStart / End]
-        AS[Assignment: dueDate / closesAt]
-        AM[Assessment: opensAt / dueAt]
-        AN[Announcement: publishAt / expiresAt]
-        BA[Batch: startDate / endDate]
-        MC[ManualCalendarEvent: Institutional / Holidays]
-    end
-
-    subgraph Calendar Service Core
-        REQ[Client Request: GET /api/v1/calendar?from=...&to=...] --> Scope[Role & Enrollment Scope Resolver]
-        Scope --> Parallel[Parallel Bounded Range Queries via Promise.all]
-        CS & AS & AM & AN & BA & MC --> Parallel
-        Parallel --> Projector[CalendarProjector: Normalized DTO Mapping]
-        Projector --> Sorter[Chronological Sorter & Deduplicator]
-    end
-
-    subgraph Multi-Actor Views
-        Sorter --> V1[Student Calendar: Enrolled Classes, Due Dates, Quizzes]
-        Sorter --> V2[Teacher Calendar: Assigned Teaching Sessions & Deadlines]
-        Sorter --> V3[Guardian Calendar: Active Linked Children Only]
-        Sorter --> V4[Admin Calendar: Institution-Wide Master Schedule]
-        Sorter --> V5[Public Visitor Calendar: Verified Public Events Only]
-    end
-```
-
-### Key Guarantees
-- **Zero Duplicate Source-of-Truth**: Changes to classes, assignments, exams, or notices immediately reflect on the calendar without data sync steps or caching lag.
-- **Strict Actor Scope Isolation**: Students only view events for batches they are actively enrolled in. Teachers only see assigned courses/batches. Guardians can only access schedules of children with verified, active `GuardianLink` relationships. Unauthenticated visitors are restricted exclusively to events with `isPublic: true`.
-- **Timezone Preserved Canonical Architecture**: All timestamps are stored and calculated in canonical UTC. Client-side rendering adapts timestamps cleanly to the actor's profile timezone (e.g. `Asia/Riyadh` or `Asia/Dhaka`).
-- **Bounded Range Validation**: Query endpoints enforce bounded ranges (maximum 366 days) with database index filtering (`scheduledStart`, `dueDate`, `opensAt`, `publishAt`) to prevent full-collection scans.
-
-### Phase 7 API Endpoints
-
-#### Calendar (`/api/v1/calendar`)
-- `GET /api/v1/calendar` — Unified date-range calendar query with event-type, course, batch, and child filtering
-- `GET /api/v1/calendar/upcoming` — Quick 14-day upcoming events helper endpoint
-- `POST /api/v1/calendar/events` — Create standalone manual institutional event (Requires `CALENDAR_CREATE`)
-- `PATCH /api/v1/calendar/events/:id` — Update manual event (Requires `CALENDAR_UPDATE`)
-- `DELETE /api/v1/calendar/events/:id` — Delete manual event (Requires `CALENDAR_DELETE`)
-
----
-
-## 14. Academic Messaging Engine (Phase 8)
-
-Phase 8 implements the institutional Academic Messaging Engine as defined in PRD §47. In strict accordance with core domain separation, **Messages** (user-authored, multi-turn conversation threads between authorized educational participants) are architecturally separated from **Notifications** (system-generated, single-recipient event alerts).
-
-```mermaid
-flowchart TD
-    subgraph Actor Request
-        A[Authenticated User] --> V[Relationship Authorization Engine]
-    end
-
-    subgraph Relationship Validation
-        V --> R1{Student ↔ Teacher?}
-        R1 -- Yes --> E1[Active Enrollment in Teacher's Course/Batch]
-        V --> R2{Guardian ↔ Teacher?}
-        R2 -- Yes --> E2[Verified ACTIVE GuardianLink + Linked Student Enrolled]
-        V --> R3{Staff/Admin ↔ Any?}
-        R3 -- Yes --> E3[Permitted Support / Academic Advisory]
-        V --> R4{Teacher ↔ Teacher?}
-        R4 -- Yes --> E4[Permitted Faculty Collaboration]
-    end
-
-    subgraph Conversation Lifecycle
-        E1 & E2 & E3 & E4 --> DetKey[Deterministic Participant Key & Canonical Order]
-        DetKey --> Conv[(conversations Collection)]
-        Conv --> Msg[(messages Collection)]
-    end
-
-    subgraph Message Processing
-        Msg --> Idemp[Idempotency Guard: senderId + clientMessageId]
-        Idemp --> Atomic[Atomic Advance: lastMessageSummary + unreadCount++]
-        Atomic --> Dispatch[NotificationDispatcher: MESSAGE_RECEIVED Alert]
-        Dispatch --> RecipInbox[/notifications Inbox & Header Indicator]
-    end
-```
-
-### Key Guarantees
-- **Strict Domain Separation**: Notifications ≠ Messages. User messages live in dedicated `conversations` and `messages` collections; system notifications are only triggered as asynchronous event alerts when recipients receive incoming messages.
-- **Server-Side Relationship Matrix**: Arbitrary student-to-student or guardian-to-arbitrary-teacher communication is strictly blocked. Students can only message teachers assigned to their active course batches. Guardians can only message teachers instructing their verified, actively linked children.
-- **Deterministic Conversation Uniqueness**: Direct 1-on-1 conversations enforce canonical participant ID ordering (`userA:userB`) with unique indexes, preventing duplicate parallel threads between the same parties.
-- **Message Idempotency**: Messages accept an optional `clientMessageId`, backed by a compound unique sparse index (`senderId + clientMessageId`), guaranteeing safe network retries without duplicate message insertion.
-- **Secure IDOR Protection**: Every read, write, edit, and deletion endpoint independently verifies participant membership against authenticated session credentials. Non-participants receive strict `403 Forbidden` responses.
-- **Audit-Preserving Soft Deletes**: Deleting a message preserves the record for institutional compliance, masking the body to `"This message was deleted."` and stripping attachments while recording `deletedAt`.
-
-### Phase 8 API Endpoints
-
-#### Conversations (`/api/v1/conversations`)
-- `GET /api/v1/conversations` — Retrieve current user's conversations with participant metadata, unread counters, and search filtering
-- `POST /api/v1/conversations` — Initiate a conversation with relationship validation and atomic initial message creation
-- `GET /api/v1/conversations/:id` — Retrieve conversation metadata and participant details (IDOR verified)
-- `GET /api/v1/conversations/:id/messages` — Paginated message history (chronological with cursor-based or offset pagination)
-- `POST /api/v1/conversations/:id/messages` — Append message, advance thread snippet atomically, and increment recipient unread count
-- `POST /api/v1/conversations/:id/read` — Mark all conversation messages as read for the authenticated actor
-- `POST /api/v1/conversations/:id/archive` — Archive thread from active inbox view
-- `POST /api/v1/conversations/:id/unarchive` — Restore archived thread to active inbox view
-
-#### Messages (`/api/v1/messages`)
-- `PATCH /api/v1/messages/:id` — Edit authored message body (sender only; sets `isEdited: true` and `editedAt`)
-- `DELETE /api/v1/messages/:id` — Soft-delete message (sender or Admin/Super Admin only)
-
----
-
-## 15. Certificates & Digital Credentials Engine (Phase 9)
-
-Phase 9 implements the institutional Certificates and Digital Credentials Engine as specified in PRD §48 and §49. Certificates represent authoritative, immutable credentials issued to students upon the successful completion of courses or programs with finalized academic standing.
-
-```mermaid
-flowchart TD
-    subgraph Authoritative Academic Sources
-        U[User / Student Profile]
-        E[Enrollment: Status, Progress, Tuition]
-        G[GradeResult: PUBLISHED / CORRECTED + isPassed]
-        A[Attendance: Minimum Rate Threshold]
-    end
-
-    subgraph Eligibility & Issuance
-        U & E & G & A --> EligEngine[CertificateEligibilityService]
-        EligEngine --> Decision{Criteria Satisfied?}
-        Decision -- No --> Reject[Ineligible / Reason Reported]
-        Decision -- Yes --> CertService[CertificateService]
-        CertService --> Snap[Build Immutable Credential Snapshot]
-        CertService --> Num[Generate Unique Collision-Safe ID: ETA-YYYY-CRS-XXXX]
-        CertService --> Token[Generate Secure Verification Code: v_random]
-    end
-
-    subgraph Ledger Persistence
-        Snap & Num & Token --> DB[(certificates Collection)]
-        DB --> Artifact[Vector SVG & Conforming PDF-1.4 Generator]
-        DB --> Notif[NotificationDispatcher: CERTIFICATE_ISSUED]
-    end
-
-    subgraph Consumption & Verification
-        Artifact --> Download[Student Download PDF / /student/certificates]
-        DB --> PubVerify[Public Verification /certificate/verify/:code]
-        PubVerify --> Display[Zero-Knowledge Public Verification Record & QR]
-        CertService --> Revoke[Revocation & Reissue Linkage: REPLACED Audit]
-    end
-```
-
-### Key Guarantees
-- **Authoritative Source-of-Truth Chain**: Certificates are never issued from client-supplied grades or names. Eligibility requires active/completed `Enrollment`, `PAID`/`WAIVED` tuition, passing grades, and strictly `PUBLISHED` or `CORRECTED` `GradeResult` status (provisional DRAFT grades are unconditionally rejected).
-- **Immutable Credential Snapshot**: Once issued, the certificate preserves an immutable snapshot of student name, course title, letter grade, GPA, and completion date, ensuring historical auditability even if course titles or student profiles change.
-- **Unique Collision-Safe Identifiers**: Each certificate receives a collision-safe ID (`ETA-YYYY-CRS-XXXXXXXX`) and an unpredictable cryptographic verification code (`v_hex`), preventing public enumeration.
-- **Spec-Compliant Digital Artifacts**: Generates vector SVG and conforming PDF artifacts utilizing official ETA Brand Design System tokens (Navy `#073C84`, Deep Blue `#0752B5`, Blue `#0B7CEB`, Cyan `#16C4FF`).
-- **Privacy-Preserving Public Verification (PRD §49)**: Public verification endpoint (`/certificate/verify/:code`) validates credential authenticity, student name, course, and issuing institution without leaking sensitive personal identifiers (no email, phone, internal student ID, or MongoDB IDs).
-- **Auditable Revocation & Reissuance**: Revoked credentials remain in the historical ledger marked `REVOKED` with formal revocation reasons; reissued credentials mark previous versions as `REPLACED` and record bidirectional audit linkages.
-
-### Phase 9 API Endpoints
-
-#### Public Verification
-- `GET /api/v1/certificates/verify/:code` — Public credential verification (unauthenticated; verified by verification code, certificate number, or ID)
-- `GET /api/v1/certificates/artifact/:verificationCode` — Public digital artifact access
-
-#### Student & Guardian Access
-- `GET /api/v1/certificates/me` — Retrieve authenticated student's issued certificates
-- `GET /api/v1/certificates/student/:studentId` — Retrieve certificates for linked child (verified active GuardianLink required)
-- `GET /api/v1/certificates/:id` — Retrieve certificate details (IDOR verified)
-- `GET /api/v1/certificates/:id/download` — Download official certificate PDF artifact
-
-#### Administrative Management
-- `GET /api/v1/certificates` — Query all certificates with filters (course, batch, student, status, type, search)
-- `GET /api/v1/certificates/eligibility` — Preview student/batch eligibility with factors and criteria breakdown
-- `POST /api/v1/certificates/issue` — Issue certificate from authoritative records (with optional override audit)
-- `POST /api/v1/certificates/bulk-issue` — Batch issuance for eligible students in a course or cohort
-- `POST /api/v1/certificates/:id/revoke` — Revoke certificate with required administrative reason
-- `POST /api/v1/certificates/:id/reissue` — Reissue replacement certificate with audit linkage
-
----
-
-## 16. Phase 10 — Finance & Fee Management Engine (PRD §50)
-
-The **Finance & Fee Management Module** provides an authoritative, double-entry-aligned institutional billing, fee structure, payment processing, scholarship management, and digital receipt ledger for ETA.
-
-### Architecture & Transaction Flow
-
-```mermaid
-flowchart TD
-    subgraph Fee Modeling & Assignment
-        FS[FeeStructure: Tuition, Exam, Lab, Reg] --> Assign[Student/Batch Fee Assignment]
-        Sch[Scholarship Engine: Merit, Need-Based, Waiver] --> Disc[Discount & Concession Rules]
-    end
-
-    subgraph Authoritative Invoice Generation
-        Assign & Disc --> InvGen[Invoice Generation Service]
-        InvGen --> Snap[Snapshot Line Items at Issuance]
-        InvGen --> InvNum[Collision-Safe Invoice #: INV-YYYY-XXXXXXXX]
-        InvGen --> InvDB[(invoices Collection)]
-        InvGen --> Notif1[NotificationDispatcher: INVOICE_ISSUED]
-    end
-
-    subgraph Payment Reconciliation
-        ClientPay[Student / Admin Payment Event] --> Gate[Payment Method: BANK_TRANSFER, CASH, CARD, GATEWAY]
-        Gate --> PmtGen[Record Payment with Idempotency Key]
-        PmtGen --> AtomTrans[Atomic MongoDB Write / Balance Deduction]
-        AtomTrans --> PmtDB[(payments Collection)]
-        AtomTrans --> BalUpdate[Derived Balance = Total - Paid + Refunded]
-        BalUpdate --> StatusTrans[Invoice Status Transition: unpaid -> partially_paid -> paid]
-        AtomTrans --> EnrSync[Synchronize Enrollment paymentStatus]
-        AtomTrans --> Notif2[NotificationDispatcher: PAYMENT_RECEIVED]
-    end
-
-    subgraph Receipts & Downstream Clearances
-        AtomTrans --> RecGen[Vector SVG & PDF-1.4 Receipt Generator]
-        RecGen --> RecPDF[Download Official Receipt / Receipts Ledger]
-        BalUpdate --> CertClear[FinanceService.checkStudentTuitionClearance]
-        CertClear --> Phase9Cert[Phase 9 Certificate Eligibility Clearance]
-    end
-
-    subgraph Adjustments & Refunds
-        AdminRefund[Staff Refund Request with Authorized Reason] --> RefGate[Validate Refundable Amount <= Paid - Prior Refunds]
-        RefGate --> RefDB[(refunds Collection)]
-        RefGate --> RestLiability[Restore Invoice Liability & Balance]
-    end
-```
-
-### Key Guarantees
-- **Integer Minor Units Representation**: All authoritative monetary calculations (tuition, discounts, scholarships, payments, balances, refunds) are strictly represented in integer minor currency units (cents/halalas) to prevent floating-point rounding errors.
-- **Authoritative Transactional Records**: Payment truth is never represented by arbitrary client values or client-driven flags. Invoices, payments, scholarships, and refunds are immutable, auditable database records.
-- **Snapshot Line Item Integrity**: Invoice line items snapshot fee names, item types, and amounts at time of issuance; subsequent fee structure revisions do not retroactively alter historical invoices.
-- **Server-Authoritative Status Transitions**: Invoice states (`unpaid`, `partially_paid`, `paid`, `overdue`, `waived`, `refunded`) are calculated server-side based on derived balance and server time.
-- **Idempotency & Concurrency Guards**: External transaction IDs and slip references are guarded against double-submission. Overpayment beyond invoice balance is rejected.
-- **Cross-Phase Certificate Clearance Integration**: Phase 9's `CertificateEligibilityService` queries `FinanceService.checkStudentTuitionClearance` directly, guaranteeing that unpaid or overdue tuition blocks certificate issuance across the platform.
-- **SPEC-Compliant Brand Receipts**: Generates downloadable vector SVG and conforming PDF receipt artifacts styled using ETA Brand Design System tokens.
-- **IDOR Prevention & Guardian Authorization**: Students only access their personal invoices/receipts. Guardians must possess an active, verified `GuardianLink` to view or settle tuition for their linked student.
-
-### Phase 10 API Endpoints
-
-#### Summary & Oversight
-- `GET /api/v1/finance/summary` — Institutional financial KPIs (total invoiced, collected, outstanding, refunded)
-
-#### Fee Structures
-- `GET /api/v1/finance/fee-structures` — List active fee structures
-- `GET /api/v1/finance/fee-structures/:id` — Fee structure details
-- `POST /api/v1/finance/fee-structures` — Create new institutional fee structure (`FEE_MANAGE` permission)
-- `PATCH /api/v1/finance/fee-structures/:id` — Update existing fee structure
-
-#### Invoices
-- `GET /api/v1/finance/invoices` — List invoices with filters (student, course, batch, status, search)
-- `GET /api/v1/finance/invoices/me` — Authenticated student's invoices
-- `GET /api/v1/finance/invoices/:id` — Invoice breakdown with line items and discounts
-- `POST /api/v1/finance/invoices` — Generate invoice for student (`INVOICE_CREATE` permission)
-- `POST /api/v1/finance/invoices/bulk` — Cohort bulk invoice generation with preview
-
-#### Payments & Receipts
-- `GET /api/v1/finance/payments` — Query payment transaction records
-- `GET /api/v1/finance/payments/me` — Authenticated student's payment history
-- `GET /api/v1/finance/payments/:id` — Payment transaction details
-- `POST /api/v1/finance/payments` — Record payment transaction with atomic balance deduction (`PAYMENT_RECORD`)
-- `GET /api/v1/finance/receipts/:id` — Receipt metadata and verification code
-- `GET /api/v1/finance/receipts/:id/download` — Download official receipt artifact (`?format=pdf` or `?format=svg`)
-
-#### Scholarships & Discounts
-- `GET /api/v1/finance/scholarships` — List institutional scholarships
-- `POST /api/v1/finance/scholarships` — Create scholarship grant (`SCHOLARSHIP_MANAGE`)
-
-#### Refunds
-- `GET /api/v1/finance/refunds` — List refund records
-- `POST /api/v1/finance/refunds` — Request refund transaction with required administrative reason (`REFUND_CREATE`)
-- `POST /api/v1/finance/refunds/:id/approve` — Approve refund and restore invoice liability (`REFUND_APPROVE`)
-
----
-
-## 17. CMS & Public Website Management (Phase 11)
-
-Phase 11 implements the institutional website and Content Management System (CMS) adhering strictly to **PRD §51** and the ETA Brand Design System.
-
-```mermaid
-graph TD
-    subgraph CMS Admin ["CMS Admin Workspace (/admin/cms)"]
-        HeroAdmin[Hero Section Config]
-        SiteAdmin[Site Settings & Footer]
-        StatsAdmin[Institutional Stats]
-        LeaderAdmin[Leadership Profiles]
-        TestAdmin[Testimonials]
-        FAQAdmin[FAQ Accordion]
-    end
-
-    subgraph Authored ["Authored Content (CMS Collections)"]
-        SiteDoc[(SiteSettings)]
-        HeroDoc[(HeroSection)]
-        StatDocs[(StatisticItems)]
-        LeaderDocs[(LeadershipProfiles)]
-        TestDocs[(Testimonials)]
-        FAQDocs[(FAQItems)]
-    end
-
-    subgraph Projected ["Projected Domain Collections (No Duplication)"]
-        CourseDocs[(Courses - Phase 2)]
-        NoticeDocs[(Announcements - Phase 6)]
-        EventDocs[(Calendar Events - Phase 7)]
-    end
-
-    subgraph PublicSite ["Institutional Public Website"]
-        PublicAPI["GET /api/v1/cms/public/home"]
-        HomePage["Public Homepage (/)"]
-        CoursesPage["Programs Directory (/courses)"]
-        VerifyCTA["Credential Verification (/certificate/verify)"]
-        AdmitCTA["Admissions Portal (/admissions/apply)"]
-    end
-
-    HeroAdmin --> HeroDoc
-    SiteAdmin --> SiteDoc
-    StatsAdmin --> StatDocs
-    LeaderAdmin --> LeaderDocs
-    TestAdmin --> TestDocs
-    FAQAdmin --> FAQDocs
-
-    HeroDoc --> PublicAPI
-    SiteDoc --> PublicAPI
-    StatDocs --> PublicAPI
-    LeaderDoc --> PublicAPI
-    TestDocs --> PublicAPI
-    FAQDocs --> PublicAPI
-    CourseDocs -.->|Active Public Projections| PublicAPI
-    NoticeDocs -.->|Published Notices Projections| PublicAPI
-    EventDocs -.->|Public Calendar Projections| PublicAPI
-
-    PublicAPI --> HomePage
-    PublicAPI --> CoursesPage
-```
-
-### Authored vs. Projected Architecture
-
-To preserve institutional single-source-of-truth without duplicating data:
-1. **CMS-Authored Content**: Hero banner, Site Settings (tagline, about, mission, vision, contact details, social links, SEO metadata, footer configuration), Leadership profiles, Testimonials, FAQ accordion, and headline performance metrics.
-2. **Projected Domain Content**:
-   - **Campus Notices**: Reuses authoritative Phase 6 `Announcement` records (`isPublic: true`, `status: PUBLISHED`, active date range).
-   - **Upcoming Events**: Reuses authoritative Phase 7 `ManualCalendarEvent` records (`isPublic: true`, `startAt >= yesterday`).
-   - **Academic Programs**: Reuses authoritative Phase 2 `Course` records (`visibility: PUBLIC`, `status: ACTIVE`).
-   - **Admissions Callouts**: Links to Phase 5 `/admissions/apply`.
-   - **Verification Callouts**: Links to Phase 9 `/certificate/verify`.
-
-### Dynamic Statistics Engine
-
-Statistics items can be either:
-- **Curated**: Explicit headline institutional numbers entered by authorized administrators.
-- **Dynamic**: Automatically evaluated from database collections:
-  - `students`: Counts active students from `User` collection (`roles: STUDENT`, `status: ACTIVE`).
-  - `courses`: Counts active courses from `Course` collection (`status: ACTIVE`).
-  - `certificates`: Counts issued certificates from `Certificate` collection (`status: ISSUED`).
-
-### CMS RBAC Permissions
-
-| Permission | Description | Assigned Roles |
-| :--- | :--- | :--- |
-| `CMS_VIEW` | Read CMS content, previews, and admin tables | `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `CMS_CREATE` | Create new metrics, leaders, testimonials, FAQs | `ADMIN`, `SUPER_ADMIN` |
-| `CMS_UPDATE` | Update hero, settings, and authored content | `ADMIN`, `SUPER_ADMIN` |
-| `CMS_PUBLISH`| Toggle publication status (`DRAFT` / `PUBLISHED`) | `ADMIN`, `SUPER_ADMIN` |
-| `CMS_DELETE` | Remove CMS items | `ADMIN`, `SUPER_ADMIN` |
-| `CMS_MANAGE` | Full administrative CMS management | `ADMIN`, `SUPER_ADMIN` |
-
-### Phase 11 API Endpoints
-
-#### Public Unauthenticated Endpoints
-- `GET /api/v1/cms/public/home` — Composite public payload (hero, site settings, dynamic statistics, leadership, testimonials, FAQs, projected courses, notices, upcoming events)
-- `GET /api/v1/cms/public/site` — Public site settings & footer configuration
-- `GET /api/v1/cms/public/hero` — Public hero section configuration
-- `GET /api/v1/cms/public/statistics` — Published institutional statistics
-- `GET /api/v1/cms/public/leadership` — Published leadership & faculty profiles
-- `GET /api/v1/cms/public/testimonials` — Published alumni & student testimonials
-- `GET /api/v1/cms/public/faqs` — Published FAQ items
-
-#### Admin Authenticated Endpoints
-- `GET /api/v1/cms/settings` / `PATCH /api/v1/cms/settings` — Manage institutional site settings & SEO
-- `GET /api/v1/cms/hero` / `PATCH /api/v1/cms/hero` — Manage public hero configuration
-- `GET /api/v1/cms/statistics` / `POST /api/v1/cms/statistics` — List and create statistics items
-- `PATCH /api/v1/cms/statistics/:id` / `DELETE /api/v1/cms/statistics/:id` — Update and delete statistics items
-- `GET /api/v1/cms/leadership` / `POST /api/v1/cms/leadership` — List and create leadership profiles
-- `PATCH /api/v1/cms/leadership/:id` / `DELETE /api/v1/cms/leadership/:id` — Update and delete leadership profiles
-- `GET /api/v1/cms/testimonials` / `POST /api/v1/cms/testimonials` — List and create testimonials
-- `PATCH /api/v1/cms/testimonials/:id` / `DELETE /api/v1/cms/testimonials/:id` — Update and delete testimonials
-- `GET /api/v1/cms/faqs` / `POST /api/v1/cms/faqs` — List and create FAQ items
-- `PATCH /api/v1/cms/faqs/:id` / `DELETE /api/v1/cms/faqs/:id` — Update and delete FAQ items
-
----
-
-## 18. Blog & Resources Module (Phase 12)
-
-Phase 12 implements the institutional publishing and public educational resources engine for the Exploratory Training Academy (PRD §52). It maintains strict domain separation from CMS presentation (Phase 11), course-bound learning materials (Phase 3), and institutional announcements (Phase 6).
-
-```mermaid
-graph TD
-    Author[(Teacher / Staff / Admin)] -->|Drafts Article| BlogEngine[Blog & Dispatches Engine]
-    Author -->|Uploads Resource| ResourceEngine[Public Resource Library]
-    BlogEngine -->|Assigns Categories & Tags| Taxonomy[Content Taxonomy]
-    BlogEngine -->|Computes Reading Time| WordCounter[Reading Time Calculator]
-    Reviewer[(Admin / Super Admin)] -->|Reviews & Approves| PublishState{Publication Status}
-    PublishState -->|DRAFT| Isolated[(Admin Workspace Only)]
-    PublishState -->|SCHEDULED| ScheduledGate[Server-Time Gate]
-    PublishState -->|PUBLISHED| PublicCatalog[Public Catalog & Search]
-    PublishState -->|ARCHIVED| Deprecated[(Withdrawn from Public)]
-    PublicCatalog -->|Safe DTOs + Metadata| PublicWeb[Next.js Public Routes: /blog, /resources]
-    PublicWeb -->|Schema.org BlogPosting| SearchEngines[SEO & Sitemaps]
-    ResourceEngine -->|Access Tier Check| AccessControl{Access Tier}
-    AccessControl -->|PUBLIC| OpenDownload[Unauthenticated Download / Stream]
-    AccessControl -->|MEMBERS_ONLY| AuthenticatedGate[Authenticated Academy Member Access]
-```
-
-### Domain Separation Matrix
-
-| Domain | Scope | Typical Entities | Audience / Access Control |
-| :--- | :--- | :--- | :--- |
-| **Blog & Resources (Phase 12)** | Public editorial publishing, academy insights, thought leadership, downloadable cheatsheets, public videos | `BlogPost`, `BlogCategory`, `Resource` | Public visitors, prospective students, academy community; Members-Only flags for exclusive materials |
-| **CMS (Phase 11)** | Institutional site layout, hero presentation, statistics, leadership profiles, FAQs, testimonials | `HeroSection`, `SiteSettings`, `DynamicStat`, `LeadershipProfile`, `Testimonial`, `FaqItem` | Unauthenticated public site visitors |
-| **Learning Materials (Phase 3)** | Curricular syllabi, lesson slides, lecture notes, lab assignments | `LearningMaterial`, `Lesson`, `Module`, `Subject` | Enrolled students & assigned teachers within active academic cohorts |
-| **Announcements (Phase 6)** | Academy bulletins, urgent campus alerts, exam schedules, operational notices | `Announcement`, `Notification` | Role-targeted cohort participants (`STUDENT`, `TEACHER`, `GUARDIAN`, `STAFF`) |
-
-### Phase 12 Entity Architecture
-
-| Entity | Primary Keys / Indexes | Key Constraints & Relationships |
-| :--- | :--- | :--- |
-| **`BlogPost`** | `slug` (unique), `[status, publishedAt]`, `[categories, status]`, `tags`, text index (`title`, `excerpt`, `content`) | Editorial article with auto-generated reading time, sanitize markdown content, SEO metadata, featured banner flag, and related article lookup. |
-| **`BlogCategory`**| `slug` (unique), `sortOrder`, `isActive` | Normalized classification taxonomy for academy articles with sort order and active status toggling. |
-| **`Resource`** | `slug` (unique), `[status, publishedAt]`, `[resourceType, status]`, `[category, status]`, text index (`title`, `description`) | Educational asset repository supporting `DOCUMENT`, `VIDEO`, `LEARNING_GUIDE`, `PUBLIC_LESSON`, `PDF`, and `TEMPLATE`. Enforces `PUBLIC` vs `MEMBERS_ONLY` access tiers and tracks downloads. |
-
-### Publication Lifecycle & RBAC
-
-The publication lifecycle enforces server-authoritative states:
-- `DRAFT` — Initial authored work in progress. Strictly isolated from public endpoints.
-- `SCHEDULED` — Set for future release. Hidden publicly until server timestamp exceeds `scheduledAt`.
-- `PUBLISHED` — Publicly accessible on `/blog`, `/resources`, and projected into homepage aggregations.
-- `ARCHIVED` — Retired content removed from public catalog while retained in administrative history.
-
-#### Role-Based Publishing Privileges
-
-| Permission | Description | Assigned Roles |
-| :--- | :--- | :--- |
-| `BLOG_VIEW` | View drafts, categories, and editorial queue | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `BLOG_CREATE` | Draft new academic articles and dispatches | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `BLOG_UPDATE` | Edit authored articles and draft revisions | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `BLOG_PUBLISH` | Promote articles to `PUBLISHED` or `ARCHIVED` | `ADMIN`, `SUPER_ADMIN` |
-| `BLOG_DELETE` | Permanently remove articles and categories | `ADMIN`, `SUPER_ADMIN` |
-| `RESOURCE_VIEW` | Access resource repository and admin inventory | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `RESOURCE_CREATE` | Register new documents, videos, and guides | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `RESOURCE_UPDATE` | Edit resource metadata, files, and links | `TEACHER`, `STAFF`, `ADMIN`, `SUPER_ADMIN` |
-| `RESOURCE_PUBLISH`| Approve and publish resources to catalog | `ADMIN`, `SUPER_ADMIN` |
-| `RESOURCE_DELETE` | Remove items from resource library | `ADMIN`, `SUPER_ADMIN` |
-
-*Note: Teachers and staff can create and edit draft articles, but institutional publication requires administrative review (`ADMIN` / `SUPER_ADMIN`), preventing unauthorized institutional statements.*
-
-### Phase 12 API Endpoints
-
-#### Public Endpoints
-- `GET /api/v1/blog` — Public paginated article listing with category, tag, search, and featured filters
-- `GET /api/v1/blog/categories` — Public listing of active categories with published article counts
-- `GET /api/v1/blog/:slug` — Public article detail by slug with computed reading time and related posts
-- `GET /api/v1/resources` — Public paginated resource library with type, category, search, and access filters
-- `GET /api/v1/resources/:slug` — Resource detail and access gate with view/download incrementing
-
-#### Editorial Admin Endpoints
-- `GET /api/v1/blog/admin/all` — Administrative listing of all posts across all lifecycle states
-- `POST /api/v1/blog` — Create article (teachers restricted to `DRAFT`)
-- `GET /api/v1/blog/admin/:id` — Retrieve post for administrative editor
-- `PATCH /api/v1/blog/:id` — Update article metadata and content
-- `POST /api/v1/blog/:id/publish` — Publish or schedule article (`ADMIN` required)
-- `POST /api/v1/blog/:id/archive` — Archive published article (`ADMIN` required)
-- `DELETE /api/v1/blog/:id` — Delete article (`ADMIN` required)
-- `GET /api/v1/blog/categories/admin/all` — Administrative category management listing
-- `POST /api/v1/blog/categories` — Create category (`ADMIN` required)
-- `PATCH /api/v1/blog/categories/:id` — Update category (`ADMIN` required)
-- `DELETE /api/v1/blog/categories/:id` — Delete category (`ADMIN` required)
-- `GET /api/v1/resources/admin/all` — Administrative listing of all resources
-- `POST /api/v1/resources` — Create resource (teachers restricted to `DRAFT`)
-- `GET /api/v1/resources/admin/:id` — Retrieve resource for admin editor
-- `PATCH /api/v1/resources/:id` — Update resource metadata, links, or files
-- `POST /api/v1/resources/:id/publish` — Publish or schedule resource (`ADMIN` required)
-- `POST /api/v1/resources/:id/archive` — Archive resource (`ADMIN` required)
-- `DELETE /api/v1/resources/:id` — Delete resource (`ADMIN` required)
-
----
-
-## 19. Global Search Engine (Phase 13)
-
-Phase 13 implements the Global Search Engine in strict conformance with PRD §53. Following the core architectural principle of **Zero Mutable Duplication**, search operates purely as an authorization-aware projection and discovery layer over authoritative domain collections.
-
-```mermaid
-flowchart TD
-    subgraph Client Discovery
-        Input[Search Input /search or Header Ctrl+K] --> Req[GET /api/v1/search?q=...&types=...]
-    end
-
-    subgraph Authentication & Scope Resolution
-        Req --> AuthScope[resolveActorScope: User Roles, Enrollments, Teacher Cohorts, Guardian Links]
-        AuthScope --> AdapterRouter[Adapter Selection & Authorization Gate]
-    end
-
-    subgraph Authorized Domain Adapters Parallel Execution
-        AdapterRouter -->|Public & Enrolled| A1[CourseSearchAdapter]
-        AdapterRouter -->|Enrolled/Teacher| A2[LessonSearchAdapter]
-        AdapterRouter -->|Public & Enrolled| A3[MaterialSearchAdapter]
-        AdapterRouter -->|Teacher & Enrolled Batch| A4[AssignmentSearchAdapter]
-        AdapterRouter -->|Teacher & Admin Only| A5[QuestionSearchAdapter]
-        AdapterRouter -->|Audience Scoped| A6[AnnouncementSearchAdapter]
-        AdapterRouter -->|Teacher & Admin Only| A7[UserSearchAdapter]
-        AdapterRouter -->|Teacher & Admin Only| A8[BatchSearchAdapter]
-        AdapterRouter -->|Admin & Finance Only| A9[PaymentSearchAdapter]
-        AdapterRouter -->|Admin & Staff Only| A10[CertificateSearchAdapter]
-        AdapterRouter -->|Admin & Admissions Only| A11[ApplicationSearchAdapter]
-        AdapterRouter -->|Public & Published| A12[BlogSearchAdapter]
-        AdapterRouter -->|Public & Published| A13[ResourceSearchAdapter]
-    end
-
-    subgraph Unified Search Engine
-        A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8 & A9 & A10 & A11 & A12 & A13 --> Aggregator[SearchService.search: Promise.all with Failure Isolation]
-        Aggregator --> Scorer[Relevance Scorer: Exact/Prefix/Word Match + Boosts]
-        Scorer --> Normalizer[Score Normalization & Type Priority Sort]
-        Normalizer --> Faceter[Authorization-Safe Facet Counter & Paginator]
-    end
-
-    subgraph Safe Delivery
-        Faceter --> Res[ISearchResponse DTO: Sanitized Metadata, No Answers, No Leaks]
-        Res --> UI[/search Discovery Page with Safe Highlight & Type Badges]
-    end
-```
-
-### Key Guarantees
-- **Authorization Before Exposure**: Sensitive records never enter search query execution. Search scopes are calculated entirely server-side (`resolveActorScope`) based on active enrollments, assigned teacher batches, and verified `GuardianLink` records.
-- **Zero Question Answer Key Leakage**: When teachers and administrators search the question bank (`QUESTION`), answers, option correctness (`isCorrect`), and internal explanation fields are stripped prior to DTO construction. Questions are strictly inaccessible to students and anonymous visitors.
-- **Privacy-Preserving User Directory**: Teachers only discover students belonging to their assigned course/batch cohorts; sensitive student email addresses, phone numbers, and authentication identifiers are excluded from search results.
-- **Financial & Admission Isolation**: Tuition payments and admission applications are strictly bounded to administrative officers; students, teachers, and public visitors cannot discover or infer existence of payment records.
-- **Unicode-Safe Multilingual Search**: Regex patterns and query normalizers safely preserve English, native Bengali (`মেশিন লার্নিং`), and Arabic (`الذكاء الاصطناعي`) characters without stripping or destructive transformations.
-- **ReDoS Defense**: All incoming user query strings are sanitized with `escapeRegex` and strictly bounded (2 to 100 characters) via Zod schemas.
-
-### Phase 13 API Endpoints
-
-#### Global Search (`/api/v1/search`)
-- `GET /api/v1/search?q=:query` — Unified, authorization-aware global search across all permitted domains.
-  - Query parameters:
-    - `q` — Search query string (min 2, max 100 characters)
-    - `types` — Optional comma-separated list of `SearchResultType` filters
-    - `courseId` — Optional course boundary filter
-    - `batchId` — Optional batch boundary filter
-    - `page` — Pagination page number (default 1)
-    - `limit` — Maximum results per page (1 to 50, default 20)
-
----
-
-## 20. Analytics Engine, Reports & Exports (Phase 14)
-
-Phase 14 implements the Analytics Engine, Reports & Exports as specified in PRD §54 and §55. Following the architectural non-duplication principle, analytics functions purely as a projection and aggregation layer over authoritative domain models (`Enrollment`, `AttendanceRecord`, `AssessmentAttempt`, `AssignmentSubmission`, `Certificate`, `AdmissionApplication`, `Payment`, `Refund`). No duplicate mutable metric records or secondary data warehouses are introduced.
-
-```mermaid
-flowchart TD
-    subgraph Authoritative Domain Sources
-        S1[Enrollment: Progress & Status]
-        S2[AttendanceSession & Record: Finalized States]
-        S3[AssessmentAttempt: Graded Scores & Passing]
-        S4[Assignment & Submission: Overdue & Review States]
-        S5[Certificate: Active Digital Credentials]
-        S6[AdmissionApplication: Lifecycle & Decisions]
-        S7[Finance: Payment & Refund Minor Units]
-        S8[User: Roles & Activity Signals]
-    end
-
-    subgraph Analytics & Aggregation Layer
-        ScopeCheck[Actor Scope Resolver: IDOR Protected] --> Aggregator
-        S1 & S2 & S3 & S4 & S5 & S6 & S7 & S8 --> Aggregator[Domain Aggregation Services]
-        Aggregator --> StudentSvc[StudentAnalyticsService: PRD §54.1]
-        Aggregator --> TeacherSvc[TeacherAnalyticsService: PRD §54.2]
-        Aggregator --> AdminSvc[AdminAnalyticsService: PRD §54.3]
-        Aggregator --> ReportSvc[AnalyticsReportService: PRD §55]
-    end
-
-    subgraph Delivery & Security
-        StudentSvc --> DTO1[Student Portal /student/analytics]
-        TeacherSvc --> DTO2[Teacher Portal /teacher/analytics: Struggling Student Explanations]
-        AdminSvc --> DTO3[Executive Portal /admin/analytics: Institutional KPIs & Revenue]
-        ReportSvc --> CSVExp[AnalyticsExportService: RFC 4180 CSV + UTF-8 BOM + Formula Injection Neutralization]
-        ReportSvc --> PDFExp[AnalyticsExportService: %PDF-1.4 Zero-Dependency Binary Document Generation]
-    end
-```
-
-### Key Guarantees
-- **Authoritative Source of Truth**: Metrics are calculated dynamically or projected from the authoritative collections. For example, revenue strictly subtracts approved refunds in integer minor units from completed `Payment` records; attendance reuses the canonical Phase 4C formula `((present + late) / total) * 100`.
-- **Explainable Struggling Student Detection**: At-risk learners are identified via deterministic, human-readable criteria (`attendanceRate < 75%`, `assessmentAverage < 60%`, or `overdueAssignments >= 2`), avoiding opaque artificial intelligence black boxes.
-- **CSV Formula Injection Neutralization**: Any cell content starting with `=`, `+`, `-`, `@`, `\t`, or `\r` is automatically neutralized by prefixing a single quote `'` in strict compliance with RFC 4180 and spreadsheet security guidelines.
-- **Zero-Dependency PDF Reports**: Official formatted PDF documents are rendered with valid binary `%PDF-1.4` headers, page trees, font dictionaries, and EOF trailers without external browser automation overhead.
-- **Bounded Range Verification**: Analytics queries enforce bounded timeframes (maximum 366 days) to prevent Denial of Service and unindexed database scans.
-
-### Phase 14 API Endpoints
-
-#### Analytics (`/api/v1/analytics`)
-- `GET /api/v1/analytics/student/me` — Personal student progress, attendance, streak, and subject mastery (Requires `ANALYTICS_VIEW_SELF`)
-- `GET /api/v1/analytics/teacher` — Scoped cohort attendance, assignment completion, quiz averages, struggling students, and ungraded work (Requires `ANALYTICS_VIEW_TEACHER`)
-- `GET /api/v1/analytics/admin` — Institutional overview: active students, growth, exam performance, teacher activity, admissions conversion, and net revenue (Requires `ANALYTICS_VIEW_ADMIN`)
-
-#### Reports & Exports (`/api/v1/reports`)
-- `GET /api/v1/reports` — Tabular preview of institutional reports across 9 domains (Requires `REPORT_VIEW`)
-- `GET /api/v1/reports/export` — Download report in RFC 4180 CSV or %PDF-1.4 format (Requires `REPORT_EXPORT`)
-
----
-
-## 21. Audit Logging Engine (Phase 15 — PRD §56)
-
-Phase 15 introduces an enterprise-grade, append-only **Audit Logging Engine** strictly separated from runtime application debug logging. The audit engine records sensitive administrative, financial, academic, and security mutations to guarantee institutional accountability, compliance, and tamper-resistant forensic investigation.
-
-```mermaid
-flowchart TD
-    subgraph Domain Operations
-        AdminRole[Role Assignment / Suspension] --> Mutate[Authoritative DB Mutation]
-        FinanceTx[Payment / Refund Approval] --> Mutate
-        GradeOverride[Grade Override / Publication] --> Mutate
-        AttendanceAdj[Attendance Correction / Finalize] --> Mutate
-        CertRevoke[Certificate Issue / Revocation] --> Mutate
-        AdmissionsDec[Admission Decision / Conversion] --> Mutate
-    end
-
-    subgraph Audit Pipeline
-        Mutate -->|On Success| Builder[AuditService.record: PRD §56]
-        Builder --> Redactor[Recursive Redaction Layer: Passwords, Tokens, Secrets, CVVs]
-        Builder --> DiffEngine[computeFieldDiff: Before vs After State Calculation]
-        Redactor --> ImmutModel[AuditLogModel: Write-Once / Append-Only]
-        DiffEngine --> ImmutModel
-    end
-
-    subgraph Security & Access
-        ImmutModel --> QueryAPI[GET /api/v1/audit-logs: Indexed Queries & Pagination]
-        ImmutModel --> ExportAPI[GET /api/v1/audit-logs/export: RFC 4180 CSV Export]
-        ImmutModel --> DetailAPI[GET /api/v1/audit-logs/:id: Sanitized Inspection]
-        QueryAPI --> AdminUI[Admin Viewer: /admin/audit with Slide-over Diff Drawer]
-    end
-```
-
-### Key Guarantees & Architecture
-- **Audit Logging ≠ Debug Logging**: Only meaningful institutional and security operations are audited (e.g., role mutations, financial transactions, grade overrides, attendance corrections, credential revocations). Ephemeral runtime diagnostics and debug traces remain in application loggers.
-- **Append-Only & Immutability Protection**: Audit documents are write-once. Mongoose pre-save and query middleware (`updateOne`, `updateMany`, `deleteOne`, `deleteMany`, `findOneAndUpdate`, `findOneAndDelete`) strictly forbid modifications and deletions through application pathways.
-- **Centralized Recursive Redaction**: All change snapshots, payloads, and metadata are scrubbed recursively by `redactSensitiveData()` before persistence, stripping passwords, bearer tokens, API keys, CVVs, card numbers, private keys, auth credentials, and exam answer keys.
-- **Server-Derived Context**: Actor identity (`actor.id`, `actor.role`, `actor.type`) is derived strictly from verified server authentication context (`req.user`), preventing client spoofing.
-- **Readable Field Diffs**: Instead of storing bloated Mongoose documents, `computeFieldDiff()` records precise field changes (`{ field, before, after }`), excluding internal metadata (`_id`, `__v`).
-- **High-Performance Compound Indexes**: Queries are accelerated using indexed attributes: `{ occurredAt: -1 }`, `{ 'actor.id': 1, occurredAt: -1 }`, `{ action: 1, occurredAt: -1 }`, `{ category: 1, occurredAt: -1 }`, `{ resourceType: 1, resourceId: 1, occurredAt: -1 }`, and `{ result: 1, occurredAt: -1 }`.
-- **Spreadsheet Security**: CSV exports neutralize formula injection attacks (`=`, `+`, `-`, `@`, `\t`, `\r`) via RFC 4180 single-quote prefixing with UTF-8 BOM encoding.
-
-### Phase 15 API Endpoints (`/api/v1/audit-logs`)
-- `GET /api/v1/audit-logs` — Filtered, paginated audit records with date range bounds (Requires `AUDIT_VIEW`)
-- `GET /api/v1/audit-logs/export` — RFC 4180 CSV export of filtered audit events (Requires `AUDIT_EXPORT`)
-- `GET /api/v1/audit-logs/:id` — Detailed sanitized audit entry inspection (Requires `AUDIT_VIEW`)
-
----
-
-## 22. Phase 16 — Multilingual Support Engine (PRD §57)
-
-The **Multilingual Support Module** provides a centralized, strongly typed internationalization and bidirectional layout architecture for ETA, supporting **English (`en`)**, **Bangla / Bengali (`bn`)**, and **Arabic (`ar`)** with seamless RTL document rendering.
-
-### Architecture & Conceptual Flow
-
-```mermaid
-flowchart TD
-    subgraph Locale Resolution & Priority
-        InitReq[Initial Request / SSR] --> ReadCookie[Read eta_locale Cookie]
-        ReadCookie --> FallbackDef[Fallback: DEFAULT_LOCALE = 'en']
-        AuthEvt[User Authenticated] --> AuthPref[User.preferredLanguage]
-        AuthPref --> ContextState[I18nProvider Context]
-    end
-
-    subgraph Presentation & Layout Engine
-        ContextState --> HTMLSync[<html lang=... dir=ltr|rtl>]
-        ContextState --> TypedDict[Typed Translation Dictionaries: en / bn / ar]
-        ContextState --> IntlFmt[Intl Formatter Engine: Dates, Numbers, Currency, Relative Time]
-        HTMLSync --> RTLStyles[RTL CSS & Logical Properties]
-    end
-
-    subgraph Dynamic Content vs Application UI
-        TypedDict --> UIChrome[Application UI Chrome: Buttons, Headers, Navigation, Badges]
-        UserAuthored[Dynamic Content: Blogs, Announcements, Messages] --> BidiSafe[Preserved as Author-Authored with dir='auto']
-    end
-```
-
-### Key Guarantees & Architecture
-- **Centralized Infrastructure**: Eliminates scattered inline language checks (`locale === 'ar' ? ...`). One unified `useI18n()` hook exposes typed translations, direction awareness, and formatters across client components.
-- **RTL & Bidirectional Safety**: Arabic switches document direction to `dir="rtl"` with logical CSS spacing (`margin-inline`, `padding-inline`). User-authored dynamic content uses Unicode-safe bidirectional isolation (`dir="auto"`) and technical IDs/codes remain in `.bidi-ltr`.
-- **100% Dictionary Key Parity**: The canonical English dictionary (`en.ts`) acts as the contract for `bn.ts` and `ar.ts`. The complete dictionary is verified via automated unit tests with deterministic fallback to English.
-- **Authoritative Data & Enum Stability**: Stored MongoDB enum values (`AuditAction`, `InvoiceStatus`, `UserRole`, `CertificateStatus`) and financial integer minor units remain canonical LTR English values. Only display labels are localized.
-- **User Preference Synchronization**: Authenticated locale changes immediately update active client context, persist to the `eta_locale` cookie/localStorage, and synchronize to `User.preferredLanguage` in MongoDB via `/auth/profile`. Anonymous visitors persist via cookie with zero layout shift on initial SSR.
-
-### Contributor Guide: Adding New UI Copy
-1. Add the new translation key to the canonical `TranslationDictionary` interface in `apps/web/src/i18n/types.ts`.
-2. Provide the canonical English string in `apps/web/src/i18n/dictionaries/en.ts`.
-3. Provide the institutional Bengali string in `apps/web/src/i18n/dictionaries/bn.ts`.
-4. Provide the standard Arabic string in `apps/web/src/i18n/dictionaries/ar.ts`.
-5. Consume in your component via `const { t } = useI18n();` -> `t('domain.key')`.
-6. Run `pnpm --filter @eta/api test src/modules/i18n/i18n.test.ts` to verify 100% dictionary completeness.
-
----
-
-## 23. Phase 17 — Offline-First Support, PWA, Caching & Performance Optimization (PRD §58, §75, §77)
-
-The **PWA and Offline-First Architecture** delivers an installable, high-performance web experience for the Exploratory Training Academy while preserving strict data security, zero cross-user cache leakage, and authoritative backend truth.
-
-### Architecture & Caching Strategy Flow
-
-```mermaid
-flowchart TD
-    UserReq[Browser / Installed PWA Request] --> SWRoute{Service Worker Router /sw.js}
-
-    subgraph Service Worker Interception & Denylist
-        SWRoute -->|Method != GET| NetOnlyMutation[Network Only — No Mutation Caching]
-        SWRoute -->|Sensitive API Denylist| NetOnlySens[Network Only: /finance, /gradebook, /attendance, /messages, /auth]
-        SWRoute -->|Auth Header Present| NetOnlyAuth[Network Only — Strict Privacy]
-    end
-
-    subgraph Cache Strategies
-        SWRoute -->|Static Assets /_next/static, icons| CacheFirst[Cache-First: eta-static-v1]
-        SWRoute -->|Public Content API /cms/public, /courses| SWR[Stale-While-Revalidate: eta-public-v1]
-        SWRoute -->|HTML Navigation request.mode=navigate| NetFirst[Network-First with Fallback]
-    end
-
-    subgraph Offline Fallback & Educational Materials
-        NetFirst -->|Network Failure & Cache Miss| OfflineFallback[/offline Branded Fallback Page]
-        OfflineFallback --> OfflineStorage[(User-Scoped Offline Materials: offlineStorage)]
-        OfflineStorage --> StudentOutlines[Student Downloaded Lesson Outlines]
-    end
-
-    subgraph Privacy Lifecycle
-        LogoutEvent[User Logout / Role Switch] --> ClearSW[SW: postMessage CLEAR_USER_DATA]
-        LogoutEvent --> ClearIDB[offlineStorage.clearUserData]
-        ClearSW --> PurgedStorage[Purge User Offline State]
-        ClearIDB --> PurgedStorage
-    end
-```
-
-### Cache Strategy Matrix
-
-| Resource Type | Strategy | Cache Store | Max TTL / Bound | Offline Available? | Security & Invalidation Notes |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Static Next.js Chunks (`/_next/static/*`)** | Cache-First | `eta-static-v1.0.0` | Immutable hash | Yes | Purged on new SW version activation |
-| **Brand Favicons & Icons (`/icons/*`, `/favicons/*`)** | Cache-First | `eta-static-v1.0.0` | 30 days | Yes | Precached during SW install |
-| **HTML Navigation (`request.mode === 'navigate'`)** | Network-First | Browser / Cache | N/A | Fallback to `/offline` | Renders branded offline page when disconnected |
-| **Public CMS & Portal (`/api/v1/cms/public`)** | Stale-While-Revalidate | `eta-public-v1.0.0` | Max 50 items | Yes | Revalidates in background on network access |
-| **Public Courses, Blog, Resources** | Stale-While-Revalidate | `eta-public-v1.0.0` | Max 50 items | Yes | Purged on user logout / role switch |
-| **Certificate Verification (`/api/v1/certificates/verify/*`)** | Network-First (Short Cache) | None | Max-Age: 10s | No | Must remain fresh to reflect revocations |
-| **Finance & Invoices (`/api/v1/finance/*`)** | **STRICT NETWORK ONLY** | None | Denylisted | No | Never cached; prevents balance discrepancies |
-| **Grades & Gradebook (`/api/v1/gradebook/*`)** | **STRICT NETWORK ONLY** | None | Denylisted | No | Never cached; authoritative backend truth |
-| **Direct Messaging (`/api/v1/messages/*`)** | **STRICT NETWORK ONLY** | None | Denylisted | No | Never cached; avoids false delivery assumptions |
-| **Attendance, Audits, Analytics** | **STRICT NETWORK ONLY** | None | Denylisted | No | Never cached; institutional integrity protected |
-| **Saved Learning Materials** | Client Storage (`localStorage`) | `eta_offline_materials_{userId}` | User-managed | Yes | Explicit student save; purged on logout |
-
-### Key Guarantees
-1. **Critical PWA Security Principle**: Authenticated responses carrying bearer tokens or targeting private domains (`/finance`, `/gradebook`, `/attendance`, `/messages`, `/analytics`, `/audit`) are strictly denylisted from Service Worker storage. Cross-user cache leakage (Student A logging out, Student B logging in) is physically prevented.
-2. **PWA Installability**: Full compliance with W3C Web App Manifest specification (`site.webmanifest`), 192x192 & 512x512 maskable icons, standalone display mode, and official ETA theme colors (`#073C84` Navy, `#060E1A` Ink).
-3. **Multilingual Offline UX**: The `/offline` fallback page and PWA install/update toasts are fully localized in **English**, **Bengali**, and **Arabic** with bidirectional RTL layout safety.
-4. **Offline Learning Materials**: Students can explicitly save lesson outlines and curriculum notes for offline study. All saved items are scoped to `userId` and immediately wiped upon `logout()`.
-
----
-
-## 24. AI Study Assistant & Educational AI Engine (“Ask ETA”) — Phase 18
-
-Governed by **PRD §93 & §94**, Ask ETA is a role-scoped, curriculum-grounded educational intelligence system designed to provide personalized academic guidance, teacher assessment drafting, and automated lesson insights without compromising institutional data boundaries or academic integrity.
-
-### 24.1 Architecture & Core Trust Boundary
-
-```mermaid
-flowchart TD
-    UserReq[Student / Teacher / Admin Request] --> RBACGate{Authorization Gateway & Scope Resolver}
-    
-    subgraph Non-Negotiable Trust Boundary
-        RBACGate -->|Resolve Academic Scope| Scope[Active Course Enrollments / Teacher Assignments]
-        Scope --> VectorFilter[Pre-Retrieval DB Filter: courseId IN authorizedIds, status=PUBLISHED]
-        VectorFilter --> VectorSearch[(AIKnowledgeChunk Store: Cosine Vector Search)]
-        VectorSearch --> AuthorizedChunks[Authorized Curriculum Chunks Top-K]
-    end
-
-    subgraph Prompt Boundary & Context Assembly
-        AuthorizedChunks --> Sanitizer[PII / Answer-Key Sanitizer & Isolation Boundary]
-        Sanitizer --> GroundedContext[Curriculum-Grounded Context + Prompt Boundary]
-        GroundedContext --> AIProvider[AI Provider Abstraction / OpenAI or Local Mock]
-    end
-
-    subgraph Educational Response & Verification
-        AIProvider --> ResponseValidator{Schema & Output Validator}
-        ResponseValidator -->|Ask ETA Chat| GroundedAnswer[Response + Grounded Source Citations]
-        ResponseValidator -->|Teacher Drafts| DraftReview[Draft Assessment / Rubric Draft - Human Review Only]
-        ResponseValidator -->|Study Plan| AnalyticsPlan[Grounded Study Plan from Phase 14 Metrics]
-    end
-```
-
-### 24.2 Authoritative PRD Mapping
-- **PRD §93 (Phase 4 Scope — AI features)**: Teacher question drafting, automated rubric suggestions, weak-topic remediation hints, lesson summary caching.
-- **PRD §94 (AI Study Assistant Design — "Ask ETA")**: Student conversational study assistant, RAG architecture, curriculum-scoped retrieval, source citation requirement, multi-turn dialogue, anti-cheating guardrails.
-- **PRD §1, §3.1, §4, §5.4, §8, §54, §56, §77**: Multi-tenant institutional boundaries, RBAC matrix, student privacy, and audit logging.
-
-### 24.3 Key Components & Guarantees (Hardened in Phase 18.1)
-1. **Authorization BEFORE Retrieval & Lifecycle Synchronization**:
-   - The LLM never decides access permissions.
-   - Authoritative mutations on Lessons, Learning Materials, and Courses automatically invoke RAG synchronization (`RAGIngestionService.ingestLesson`, `ingestMaterial`, `ingestCourse`) on publish/update, and purge chunks (`purgeSource`) immediately upon unpublish (change to `DRAFT`/`ARCHIVED`) or hard delete.
-   - Students only retrieve curriculum chunks from courses with currently active enrollments (`EnrollmentStatus.ACTIVE`). Revocation of student enrollment immediately stops retrieval of those course chunks without requiring re-indexing.
-2. **Vector Metadata & Dimension Incompatibility Safety**:
-   - Every stored vector chunk contains explicit metadata: `embeddingProvider`, `embeddingModel`, `embeddingDimension`, and `embeddingVersion`.
-   - Before similarity calculation, query vector dimension is strictly matched against stored vector dimension. Mismatched vectors (e.g., 64D mock vector vs. 1536D OpenAI vector) are safely excluded rather than erroneously compared.
-   - Pre-save validation rejects non-array, non-finite, and zero-norm vectors.
-3. **Bounded Candidate Retrieval & Memory Scale Boundary**:
-   - Authorized retrieval enforces a hard cap (`MAX_RETRIEVAL_CANDIDATES = 100`) sorted by recency (`sourceUpdatedAt: -1`).
-   - For V1, in-memory cosine ranking over up to 100 candidates per query consumes `< 1 MB` RAM per request (`100 chunks * 1536 dims * 8 bytes ≈ 1.2 MB`).
-   - Scale boundary: For platform deployments with > 50,000 curriculum chunks or high concurrent throughput, MongoDB Atlas Vector Search (using native `$vectorSearch` indexes) should supersede in-memory cosine ranking.
-4. **Active Assessment & Answer-Key Guardrails**:
-   - Ask ETA queries are strictly blocked during active, in-progress assessment attempts (`AssessmentAttemptModel` with `status: 'IN_PROGRESS'`) to preserve academic integrity.
-   - Question bank answer keys (`correctAnswer`, `options.isCorrect`) are physically excluded from chunking and retrieval.
-5. **Rubric Feedback Privacy & Text-Only Scope**:
-   - The rubric assistant operates strictly on text content (`textContent`); uploaded file attachments are not parsed or sent to third-party providers.
-   - Payloads transmitted to the AI provider contain solely assignment instructions, rubric criteria, and student submission text; student PII (name, email, phone, ID, grade history) is completely omitted.
-   - Long submissions are deterministically truncated at 4,000 characters.
-   - The rubric assistant outputs advisory suggestions only; it cannot modify `GradeResult`, update submission final scores, or publish gradebooks.
-6. **Input & Context Bounds**:
-   - Ask ETA user message: <= 1,000 characters.
-   - Lesson summary input: capped at 6,000 characters.
-   - Teacher question generator reference content: capped at 6,000 characters; requires explicit instructor action to import into Question Bank.
-7. **Rate Limiting & Serverless Multi-Instance Architecture**:
-   - Express sliding-window rate limiter protects AI endpoints (30 req / 15 min for chat; 15 req / 15 min for generation).
-   - In serverless environments (e.g., Vercel), memory-based sliding window operates per-container; strict enterprise global quota enforcement requires external shared counters (e.g., Redis or Upstash) combined with provider-side billing spend caps.
-8. **Operational Cost Formula**:
-   - Real-world AI API cost per query is variable and calculated via:
-     `Cost = (Input_Tokens × Price_Input) + (Output_Tokens × Price_Output) + (Query_Embedding_Tokens × Price_Embedding)`.
-9. **Provider Safety & Mock Lockout in Production**:
-   - `AIProviderFactory` throws an explicit startup error if `NODE_ENV === 'production'` and the system attempts to run `MockAIProvider` or lacks `AI_API_KEY`.
-   - Native `OpenAIProvider` enforces a 30-second timeout via `AbortSignal.timeout(30000)` and sanitizes errors without leaking credentials.
-10. **Role Scope Precision**:
-    - Ask ETA is strictly accessible by `STUDENT`, `TEACHER`, `ADMIN`, and `SUPER_ADMIN` per PRD §8, §93, and §94. `GUARDIAN` and `STAFF` roles do not possess `AI_CHAT` permissions.
-11. **Cache Privacy & Audit Redaction**:
-    - `/api/v1/ai/*` returns `Cache-Control: private, no-store`.
-    - Audit logs record AI operational events under category `AI` with student PII, prompts, and generated bodies redacted.
-
----
-
-## 25. Official Brand Tokens
-
-The ETA brand identity utilizes the official token palette:
-
-- **Navy (`#073C84`)**: Primary Anchor
-- **Deep Blue (`#0752B5`)**: Brand Secondary
-- **Blue (`#0B7CEB`)**: Interactive Accent
-- **Bright Blue (`#129BFF`)**: Highlight & Focus
-- **Cyan (`#16C4FF`)**: Energy & Glowing accents
-- **Ink (`#071B3B`)**: Dark Canvas
-- **White (`#FFFFFF`)**: Pure Contrast
-
----
-
-## 26. License
-
-Proprietary — Exploratory Training Academy (ETA). All rights reserved.
-
-
-
-
+## 11. License & Governance
+
+**Proprietary & Confidential**  
+Copyright © 2026 **Exploratory Training Academy (ETA)**. All rights reserved.  
+Unauthorized copying, modification, distribution, or reverse engineering of this software via any medium is strictly prohibited. Governed under institutional licensing terms.
