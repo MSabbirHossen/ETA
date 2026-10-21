@@ -47,12 +47,15 @@ export function createApp(): express.Application {
   app.use(helmet());
 
   // CORS — PRD §73
+  const normalizedFrontendUrl = FRONTEND_URL.replace(/\/+$/, '');
   app.use(
     cors({
       origin: (origin, callback) => {
         if (!origin) return callback(null, true);
+        const normalizedOrigin = origin.replace(/\/+$/, '');
         if (
           origin === FRONTEND_URL ||
+          normalizedOrigin === normalizedFrontendUrl ||
           origin === 'http://localhost:3000' ||
           origin === 'http://127.0.0.1:3000' ||
           (NODE_ENV === 'development' && origin.startsWith('http://localhost:')) ||
