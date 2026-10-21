@@ -12,8 +12,25 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase (singleton pattern for Next.js SSR / Fast Refresh)
-const app: FirebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const auth: Auth = getAuth(app);
+function getFirebaseInstances(): { app: FirebaseApp | null; auth: Auth | null } {
+  try {
+    if (getApps().length > 0) {
+      const existingApp = getApp();
+      return { app: existingApp, auth: getAuth(existingApp) };
+    }
+
+    if (firebaseConfig.apiKey) {
+      const newApp = initializeApp(firebaseConfig);
+      return { app: newApp, auth: getAuth(newApp) };
+    }
+  } catch (err) {
+    console.warn('[Firebase] Initialization warning:', err);
+  }
+
+  return { app: null, auth: null };
+}
+
+const { app, auth } = getFirebaseInstances();
 
 export { app, auth, firebaseConfig };
 export default app;

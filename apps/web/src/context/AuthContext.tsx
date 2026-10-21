@@ -181,6 +181,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
 
+    if (!auth) {
+      setStatus('unauthenticated');
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       setFirebaseUser(fbUser);
       if (!fbUser) {
@@ -197,6 +202,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [syncWithBackend]);
 
   const login = async (email: string, pass: string) => {
+    if (!auth) {
+      const msg = 'Authentication service is not configured. Missing Firebase credentials.';
+      setErrorMessage(msg);
+      setStatus('unauthenticated');
+      throw new Error(msg);
+    }
     setStatus('loading');
     setErrorMessage(null);
     try {
@@ -211,6 +222,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signup = async (name: string, email: string, pass: string) => {
+    if (!auth) {
+      const msg = 'Authentication service is not configured. Missing Firebase credentials.';
+      setErrorMessage(msg);
+      setStatus('unauthenticated');
+      throw new Error(msg);
+    }
     setStatus('loading');
     setErrorMessage(null);
     try {
@@ -228,6 +245,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const loginWithGoogle = async () => {
+    if (!auth) {
+      const msg = 'Authentication service is not configured. Missing Firebase credentials.';
+      setErrorMessage(msg);
+      setStatus('unauthenticated');
+      throw new Error(msg);
+    }
     setStatus('loading');
     setErrorMessage(null);
     try {
@@ -255,7 +278,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         delete window.__ETA_TEST_AUTH__;
       }
 
-      await firebaseSignOut(auth);
+      if (auth) {
+        await firebaseSignOut(auth);
+      }
       setUser(null);
       setPermissions([]);
       setStatus('unauthenticated');
@@ -265,6 +290,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const sendPasswordReset = async (email: string) => {
+    if (!auth) return;
     await sendPasswordResetEmail(auth, email);
   };
 
@@ -288,7 +314,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const refreshProfile = async () => {
-    if (!auth.currentUser) return;
+    if (!auth?.currentUser) return;
     const data = await apiClient.get<AuthMeResponseData>('/auth/me');
     setUser(data.user);
     setPermissions(data.permissions);
@@ -307,7 +333,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const getIdToken = async (): Promise<string | null> => {
-    if (!auth.currentUser) return null;
+    if (!auth?.currentUser) return null;
     return auth.currentUser.getIdToken();
   };
 

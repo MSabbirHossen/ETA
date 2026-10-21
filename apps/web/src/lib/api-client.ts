@@ -46,7 +46,7 @@ export async function apiRequest<T = unknown>(
   };
 
   // Obtain ID token from current Firebase session if not explicitly provided
-  if (!requestHeaders['Authorization'] && auth.currentUser) {
+  if (!requestHeaders['Authorization'] && auth?.currentUser) {
     try {
       const token = await auth.currentUser.getIdToken();
       if (token) {
