@@ -6,7 +6,7 @@ import type { MetadataRoute } from 'next';
  * course, admission, and public content pages.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eta.academy';
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://eta-web-omega.vercel.app').replace(/\/+$/, '');
   const now = new Date();
 
   return [

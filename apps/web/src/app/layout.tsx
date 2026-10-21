@@ -13,6 +13,7 @@ import {
 import { ServiceWorkerRegister } from "../components/pwa/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://eta-web-omega.vercel.app'),
   title: "Exploratory Training Academy (ETA) | Learn • Explore • Grow",
   description:
     "Unified Academic, Training & Examination Management Platform. Empowering students, instructors, and academy administrators.",

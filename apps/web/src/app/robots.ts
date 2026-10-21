@@ -6,7 +6,7 @@ import type { MetadataRoute } from 'next';
  * Disallows indexing of private dashboards, administrative surfaces, search results, and API routes.
  */
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eta.academy';
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://eta-web-omega.vercel.app').replace(/\/+$/, '');
 
   return {
     rules: {
